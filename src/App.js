@@ -1,8 +1,11 @@
-import React from 'react';
+import { Header, Main } from './components/Layout';
 
 const App = () => {
   return (
-    <div>Esto es APP</div>
+    <>
+      <Header />
+      <Main />
+    </>
   );
 };
 

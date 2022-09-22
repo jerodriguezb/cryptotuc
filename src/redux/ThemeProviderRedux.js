@@ -13,7 +13,5 @@ const themeSlice = createSlice({
   },
 });
 
-// para el dispatch
 export const { setThemeLight, setThemeDefault } = themeSlice.actions;
-// para el configure
 export default themeSlice.reducer;

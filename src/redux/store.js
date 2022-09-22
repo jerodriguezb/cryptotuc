@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import themeSlice from './ThemeProviderRedux';
-import charactersSlice from './characterProviderRedux';
+import charactersSlice from './CoinProviderRedux';
 
 const store = configureStore({
   reducer: {
     theme: themeSlice,
-    characters: charactersSlice,
+    coin: charactersSlice,
   },
   devTools: true,
 });

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const charactersSlice = createSlice({
-  name: 'characters',
+const coinSlice = createSlice({
+  name: 'coin',
   initialState: {},
   reducers: {
     setCharacters(state, action) {
@@ -10,5 +10,5 @@ const charactersSlice = createSlice({
   },
 });
 
-export const { setCharacters } = charactersSlice.actions;
-export default charactersSlice.reducer;
+export const { setCoin } = coinSlice.actions;
+export default coinSlice.reducer;
