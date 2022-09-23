@@ -4,15 +4,16 @@ import { CryptoconLogo } from 'cryptocons';
 const Items = ({
   id, name, symbol, price,
 }) => {
+  console.log(name);
   return (
-    <li key={id} className="list-group-item d-flex justify-content-between align-items-start">
-      <CryptoconLogo height="40px" width="40px" icon={name} />
+     <li key={id} className="list-group-item d-flex justify-content-between align-items-start">
+       <CryptoconLogo height="40px" width="40px" icon="usd-coin"/>
       <div className="ms-2 me-auto">
-        <div className="fw-bold">{name}</div>
-        {symbol}
-      </div>
-      <span className="fs-3">$ {price}</span>
-    </li>
+         <div className="fw-bold">{name}</div>
+         {symbol}
+       </div>
+       <span className="fs-3">$ {price}</span>
+     </li>
   );
 };
 

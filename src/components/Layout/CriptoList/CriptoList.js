@@ -4,18 +4,17 @@ import useFetch from './useFetch';
 
 const CriptoList = () => {
   const datos = useFetch('https://api.coincap.io/v2/assets');
+  console.log(datos);
   return (
     <ol className="list-group list-group-numbered">
-       {console.log(datos)};
-      {datos?.data?.result.map(crypto, id => (
+      {!datos?.loading && datos.data.data.slice(0, 1).map(crypto => (
         <Items
-          key={id}
-          name={crypto.name}
-          symbol={crypto.symbol}
-          price={crypto.price}
+        key={crypto.id}
+        name={crypto.name}
+        symbol={crypto.symbol}
+        price={crypto.priceUsd}
         />
       ))}
-      <Items datos={datos} />
     </ol>
   );
 };
