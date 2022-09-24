@@ -13,7 +13,18 @@ const Header = () => {
             <li className="nav-item"><NavLink className='nav-link' to='/'>Inicio</NavLink></li>
             <li className="nav-item"><NavLink className='nav-link' to='/cotizer'>Cotizador</NavLink></li>
             <li className="nav-item"><NavLink className='nav-link' to='/calculator'>Calculadora</NavLink></li>
+            <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Localizacion
+              </a>
+            <ul className="dropdown-menu">
+              <li><a className="dropdown-item" href="#">Action</a></li>
+            </ul>
+            </li>
           </ul>
+            <div className="form-check form-switch">
+              <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"/>
+            </div>
         </div>
       </div>
     </nav>
