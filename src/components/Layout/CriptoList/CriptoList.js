@@ -7,7 +7,7 @@ const CriptoList = () => {
   console.log(datos);
   return (
     <ol className="list-group list-group-numbered">
-      {!datos?.loading && datos.data.data.slice(0, 1).map(crypto => (
+      {!datos?.loading && datos.data.data.slice(0, 10).map(crypto => (
         <Items
         key={crypto.id}
         name={crypto.name}

@@ -1,4 +1,4 @@
-import { CriptoList } from '../../components/Layout';
+import { ButtonCotizador, CriptoList, SearchBox } from '../../components/Layout';
 
 const Home = () => {
   return (
@@ -9,7 +9,10 @@ const Home = () => {
       </div>
       <div className="row">
         <div className="col-md-3">
-          {/* <SearchBox /> */}
+          <SearchBox />
+        </div>
+        <div className="col-md-3">
+          <ButtonCotizador />
         </div>
         <div className="row">
          <div className="col-md-6">
