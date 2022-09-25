@@ -24,15 +24,13 @@ const CoinHistory = () => {
     setHistoryData(data.data.slice(-24));
   };
   const getCoins = async () => {
-    const { data } = await axios.get('https://api.coincap.io/v2/assets', { params: { limit: 2 } });
+    const { data } = await axios.get('https://api.coincap.io/v2/assets', { params: { limit: 5 } });
     setCoins(data.data);
-    coins.map((coin) => getCoinHistory(coin.id));
   };
   useEffect(() => {
-    getCoinHistory('bitcoin');
     getCoins();
   }, []);
-
+  console.log('coins:', coins);
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -50,7 +48,7 @@ const CoinHistory = () => {
       },
       title: {
         display: true,
-        text: 'Bitcoin',
+        text: 'Fluctuaciones',
       },
     },
     elements: {
@@ -76,9 +74,21 @@ const CoinHistory = () => {
       },
     ],
   };
-
+  const handleChange = (id) => {
+    getCoinHistory(id);
+  };
   return (
     <div>
+      <div className="form-check">
+        {
+          coins.map((coin) => (<div className="form-check form-check-inline" key={coin.id}>
+          <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onChange={() => handleChange(coin.id)} />
+          <label className="form-check-label" htmlFor="flexRadioDefault1">
+            {coin.name}
+          </label>
+        </div>))
+        }
+      </div>
       <Line options={options} data={data} />
     </div>
   );
