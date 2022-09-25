@@ -4,27 +4,16 @@ import useFetch from '../../hooks/useFetch/useFetch';
 const Calculator = () => {
   const Coins = useFetch('https://api.coincap.io/v2/assets');
   const Rates = useFetch('https://api.coincap.io/v2/rates');
-  // const [selectedCoins, setSelectedCoins] = useState('');
-  // const [selectedRates, setSelecteRates] = useState('');
-  // const [selectedValue, setSelecteValue] = React.useState('');
   const handleChange = (e) => {
     const valor = document.getElementById('form-valor').value;
     // console.log(valor);
     if (valor !== '') {
-      // setSelecteValue(e.target.value);
       const valorCalculado = (e.target.value * document.getElementById('select-rates').value) / (document.getElementById('select-coins').value);
       document.getElementById('form-calculator').value = valorCalculado;
-      // setSelecteRates((document.getElementById('select-rates').value));
-      // setSelectedCoins(document.getElementById('select-coins').value);
-    // console.log('rates', document.getElementById('select-rates').value);
-    // console.log('coins', document.getElementById('select-coins').value);
-    // console.log(valorCalculado);
     }
-    // else document.getElementById('form-calculator').value = '';
   };
-  const handleChange2 = (e) => {
+  const handleChangeSelect = () => {
     const valor = document.getElementById('form-valor').value;
-    // console.log(valor);
     if (valor !== '') {
       // setSelecteValue(e.target.value);
       const valorCalculado = (document.getElementById('form-valor').value * document.getElementById('select-rates').value) / (document.getElementById('select-coins').value);
@@ -72,13 +61,13 @@ const Calculator = () => {
 
                   <form className="form-inline mb-4 d-flex">
                       {Rates?.loading && <h2> Loading ... Rates...</h2>};
-                      <select name="select-rates" id= "select-rates" onChange={(e) => handleChange2(e)}>
+                      <select name="select-rates" id= "select-rates" onChange={(e) => handleChangeSelect(e)}>
                         {!Rates?.loading && Rates?.data?.data?.map(rate => <option key={rate.id}
                         value={rate.rateUsd}>{rate.id}</option>)}
                       </select>
 
                       {Coins?.loading && <h2> Loading ... Coins...</h2>};
-                      <select name="select-coins" id="select-coins" onChange={(e) => handleChange2(e)}>
+                      <select name="select-coins" id="select-coins" onChange={(e) => handleChangeSelect(e)}>
                         {!Coins?.loading && Coins?.data?.data?.map(coin => <option key={coin.id}
                         value={coin.priceUsd}>{coin.id}</option>)}
                       </select>
@@ -90,7 +79,7 @@ const Calculator = () => {
                         </div>
                         <div>
                           <label> Valor Calculado: </label>
-                          <input className="form-control form-control-lg mx-3" type="text" id="form-calculator" name="form-calculator"/>
+                          <input className="form-control form-control-lg mx-3" type="text" id="form-calculator" name="form-calculator" readOnly="readonly"/>
                         </div>
                     </form>
                 </div>
