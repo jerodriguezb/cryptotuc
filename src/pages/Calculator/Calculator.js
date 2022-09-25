@@ -1,5 +1,39 @@
+import React from 'react';
+import useFetch from '../../hooks/useFetch/useFetch';
+
 const Calculator = () => {
+  const Coins = useFetch('https://api.coincap.io/v2/assets');
+  const Rates = useFetch('https://api.coincap.io/v2/rates');
+  // const [selectedCoins, setSelectedCoins] = useState('');
+  // const [selectedRates, setSelecteRates] = useState('');
+  // const [selectedValue, setSelecteValue] = React.useState('');
+  const handleChange = (e) => {
+    const valor = document.getElementById('form-valor').value;
+    // console.log(valor);
+    if (valor !== '') {
+      // setSelecteValue(e.target.value);
+      const valorCalculado = (e.target.value * document.getElementById('select-rates').value) / (document.getElementById('select-coins').value);
+      document.getElementById('form-calculator').value = valorCalculado;
+      // setSelecteRates((document.getElementById('select-rates').value));
+      // setSelectedCoins(document.getElementById('select-coins').value);
+    // console.log('rates', document.getElementById('select-rates').value);
+    // console.log('coins', document.getElementById('select-coins').value);
+    // console.log(valorCalculado);
+    }
+    // else document.getElementById('form-calculator').value = '';
+  };
+  const handleChange2 = (e) => {
+    const valor = document.getElementById('form-valor').value;
+    // console.log(valor);
+    if (valor !== '') {
+      // setSelecteValue(e.target.value);
+      const valorCalculado = (document.getElementById('form-valor').value * document.getElementById('select-rates').value) / (document.getElementById('select-coins').value);
+      document.getElementById('form-calculator').value = valorCalculado;
+    }
+  };
+
   return (
+    <>
     <div className="container my-5">
         <div className="row">
           <div className="col-lg-10 mx-auto m-20">
@@ -12,7 +46,8 @@ const Calculator = () => {
               </h4>
               <div className="row">
                 <div className="col-lg-10">
-                  <form className="form-inline mb-4 d-flex">
+
+                  {/* <form className="form-inline mb-4 d-flex">
                     <input
                       type="number"
                       className="form-control form-control-lg mx-3"
@@ -33,17 +68,43 @@ const Calculator = () => {
                             <option value="">ARS</option>
                             <option value="">USD</option>
                         </select>
-                  </form>
+                  </form> */}
+
+                  <form className="form-inline mb-4 d-flex">
+                      {Rates?.loading && <h2> Loading ... Rates...</h2>};
+                      <select name="select-rates" id= "select-rates" onChange={(e) => handleChange2(e)}>
+                        {!Rates?.loading && Rates?.data?.data?.map(rate => <option key={rate.id}
+                        value={rate.rateUsd}>{rate.id}</option>)}
+                      </select>
+
+                      {Coins?.loading && <h2> Loading ... Coins...</h2>};
+                      <select name="select-coins" id="select-coins" onChange={(e) => handleChange2(e)}>
+                        {!Coins?.loading && Coins?.data?.data?.map(coin => <option key={coin.id}
+                        value={coin.priceUsd}>{coin.id}</option>)}
+                      </select>
+
+                      <div>
+                          <label> Ingresa un Valor: </label>
+                          <input className="form-control form-control-lg mx-3" type="text" id="form-valor" name="form-valor"
+                          onChange={(e) => handleChange(e)}/>
+                        </div>
+                        <div>
+                          <label> Valor Calculado: </label>
+                          <input className="form-control form-control-lg mx-3" type="text" id="form-calculator" name="form-calculator"/>
+                        </div>
+                    </form>
                 </div>
 
-                <div className="col-lg-2 align-self-center">
-                  <button className='d-flex'><i className="bi bi-arrow-down-up"></i></button>
+                  <div className="col-lg-2 align-self-center">
+                  <button className='d-flex'><i className="bi bi-arrow-down-up">
+                  </i></button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </>
   );
 };
 
