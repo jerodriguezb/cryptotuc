@@ -2,7 +2,7 @@ import React from 'react';
 
 const ButtonCotizador = () => {
   return (
-    <button className='button'> Cotizaciones </button>
+    <button type='button' className='btn btn-light'> Cotizaciones </button>
   );
 };
 
