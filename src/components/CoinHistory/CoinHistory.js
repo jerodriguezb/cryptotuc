@@ -11,26 +11,21 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import useFetch from '../../hooks/useFetch';
+import useFetchParams from '../../hooks/useFetchParams';
 
 const CoinHistory = () => {
-  const [coins, setCoins] = useState([]);
-  const [historyData, setHistoryData] = useState([]);
+  const [idMoneda, setIdMoneda] = useState('bitcoin');
+  const params = {
+    limit: 10,
+  };
+  const monedas = useFetchParams('https://api.coincap.io/v2/assets', params);
+  // console.log('monedas', monedas?.data?.data);
+  const moneda = useFetch(`https://api.coincap.io/v2/assets/${idMoneda}/history?interval=h1`);
+  // console.log('moneda', moneda?.data?.data.slice(-24));
   const getCoinHistory = async (coinId) => {
-    // Ultimos 7 dias
-    // const { data } = await axios.get('https://api.coincap.io/v2/assets/bitcoin/history?interval=d1');
-    // setHistoryData(data.data.slice(-7));
-    // ultimas 24 horas
-    const { data } = await axios.get(`https://api.coincap.io/v2/assets/${coinId}/history?interval=h1`);
-    setHistoryData(data.data.slice(-24));
+    setIdMoneda(coinId);
   };
-  const getCoins = async () => {
-    const { data } = await axios.get('https://api.coincap.io/v2/assets', { params: { limit: 5 } });
-    setCoins(data.data);
-  };
-  useEffect(() => {
-    getCoins();
-  }, []);
-  console.log('coins:', coins);
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -58,7 +53,7 @@ const CoinHistory = () => {
     },
   };
   const data = {
-    labels: historyData.map((value) => {
+    labels: moneda?.data?.data.slice(-24).map((value) => {
       const date = new Date(value.date);
       const time = date.getHours() > 12
         ? `${date.getHours() - 12}: ${date.getMinutes()} PM`
@@ -68,7 +63,7 @@ const CoinHistory = () => {
     datasets: [
       {
         label: 'Precio (ultimas 24 horas) en USD',
-        data: historyData.map((value) => value.priceUsd),
+        data: moneda?.data?.data.slice(-24).map((value) => value.priceUsd),
         borderColor: 'rgb(255, 207, 64)',
         backgroundColor: 'rgba(255, 207, 64, 0.5)',
       },
@@ -78,10 +73,10 @@ const CoinHistory = () => {
     getCoinHistory(id);
   };
   return (
-    <div>
+    <div className='bg-dark text-white'>
       <div className="form-check">
         {
-          coins.map((coin) => (<div className="form-check form-check-inline" key={coin.id}>
+          monedas?.data?.data.map((coin) => (<div className="form-check form-check-inline" key={coin.id}>
           <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onChange={() => handleChange(coin.id)} />
           <label className="form-check-label" htmlFor="flexRadioDefault1">
             {coin.name}
