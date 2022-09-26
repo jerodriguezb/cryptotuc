@@ -1,6 +1,20 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { setThemeDefault, setThemeLight } from '../../../redux/ThemeProviderRedux';
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const { theme } = useSelector((state) => state.theme);
+  console.log(theme);
+
+  const setDefault = () => {
+    dispatch(setThemeDefault());
+  };
+
+  const setLight = () => {
+    dispatch(setThemeLight());
+  };
+
   return (
     <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
       <div className='container'>
@@ -15,7 +29,9 @@ const Header = () => {
             <li className='nav-item'><NavLink className='nav-link' to='/calculator'>Calculadora</NavLink></li>
           </ul>
           <ul className='navbar-nav'>
-            <li className='nav-item'><button className='btn btn-dark'><i className='bi bi-lightbulb'></i></button></li>
+            {theme === 'light' ? (
+              <li className='nav-item'><button className='btn btn-dark' onClick={() => setDefault()}><i className='bi bi-lightbulb-fill'></i></button></li>)
+              : (<li className='nav-item'><button className='btn btn-dark' onClick={() => setLight()}><i className='bi bi-lightbulb'></i></button></li>)}
             <li className='nav-item'><button className='btn btn-dark'><i className='bi bi-globe me-1'></i>Pais</button></li>
           </ul>
         </div>
