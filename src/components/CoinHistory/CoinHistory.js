@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -20,10 +19,8 @@ const CoinHistory = () => {
     limit: 10,
   };
   const monedas = useFetchParams('https://api.coincap.io/v2/assets', params);
-  // console.log('monedas', monedas?.data?.data);
   const moneda = useFetch(`https://api.coincap.io/v2/assets/${idMoneda}/history?interval=h1`);
-  // console.log('moneda', moneda?.data?.data.slice(-24));
-  const getCoinHistory = async (coinId) => {
+  const getCoinHistory = (coinId) => {
     setIdMoneda(coinId);
   };
   ChartJS.register(
@@ -73,12 +70,12 @@ const CoinHistory = () => {
     getCoinHistory(id);
   };
   return (
-    <div className='bg-dark text-white'>
+    <div className='bg-dark text-white' data-testid="coin-line">
       <div className="form-check">
         {
           monedas?.data?.data.map((coin) => (<div className="form-check form-check-inline" key={coin.id}>
-          <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onChange={() => handleChange(coin.id)} />
-          <label className="form-check-label" htmlFor="flexRadioDefault1">
+          <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault" onChange={() => handleChange(coin.id)} />
+          <label className="form-check-label" htmlFor="flexRadioDefault">
             {coin.name}
           </label>
         </div>))
