@@ -1,6 +1,11 @@
+import { CoinHistory } from '../../components/CoinHistory';
+
 const Cotizer = () => {
+  const idCoin = 'bitcoin';
   return (
-    <div>Cotizer</div>
+    <>
+      <CoinHistory idCoin = {idCoin} />
+    </>
   );
 };
 
