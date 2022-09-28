@@ -46,6 +46,7 @@ const Header = () => {
             <li className='nav-item'><NavLink className='nav-link' to='/'>Inicio</NavLink></li>
             <li className='nav-item'><NavLink className='nav-link' to='/cotizer'>Cotizador</NavLink></li>
             <li className='nav-item'><NavLink className='nav-link' to='/calculator'>Calculadora</NavLink></li>
+            <li className='nav-item'><NavLink className='nav-link' to='/chart'>Grafico</NavLink></li>
           </ul>
           <ul className='navbar-nav'>
             <li className='nav-item me-2'><ReactFlagsSelect

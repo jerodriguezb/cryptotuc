@@ -5,7 +5,6 @@ const coinSlice = createSlice({
   initialState: {},
   reducers: {
     setCoin(state, action) {
-      console.log(action.payload);
       state.country = action.payload;
     },
   },

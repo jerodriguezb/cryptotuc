@@ -1,1 +1,1 @@
-export { default as CoinCotizer } from './CoinCotizer';
+export { default as CoinCotizer } from './Cotizer';
