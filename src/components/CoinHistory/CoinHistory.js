@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -10,19 +11,10 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import useFetch from '../../hooks/useFetch';
-import useFetchParams from '../../hooks/useFetchParams';
+import useFetch from '../../hooks/useFetch/useFetch';
 
-const CoinHistory = () => {
-  const [idMoneda, setIdMoneda] = useState('bitcoin');
-  const params = {
-    limit: 10,
-  };
-  const monedas = useFetchParams('https://api.coincap.io/v2/assets', params);
-  const moneda = useFetch(`https://api.coincap.io/v2/assets/${idMoneda}/history?interval=h1`);
-  const getCoinHistory = (coinId) => {
-    setIdMoneda(coinId);
-  };
+const CoinHistory = ({ idCoin }) => {
+  const moneda = useFetch(`https://api.coincap.io/v2/assets/${idCoin}/history?interval=h1`);
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -49,6 +41,15 @@ const CoinHistory = () => {
       },
     },
   };
+  const getTimes = (cryptoCurrency) => {
+    const times = [];
+    moneda?.data?.data.slice(-24).map((value) => (
+      times.push(new Date(value.date).getHours() > 12
+        ? `${new Date(value.date).getHours() - 12}: ${new Date(value.date).getMinutes()} PM`
+        : `${new Date(value.date).getHours()}: ${new Date(value.date).getMinutes()} AM`)
+    ));
+    return times;
+  };
   const data = {
     labels: moneda?.data?.data.slice(-24).map((value) => {
       const date = new Date(value.date);
@@ -66,22 +67,18 @@ const CoinHistory = () => {
       },
     ],
   };
-  const handleChange = (id) => {
-    getCoinHistory(id);
-  };
   return (
-    <div className='bg-dark text-white' data-testid="coin-line">
-      <div className="form-check">
-        {
-          monedas?.data?.data.map((coin) => (<div className="form-check form-check-inline" key={coin.id}>
-          <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault" onChange={() => handleChange(coin.id)} />
-          <label className="form-check-label" htmlFor="flexRadioDefault">
-            {coin.name}
-          </label>
-        </div>))
-        }
-      </div>
+    <div className='container my-5 bg-dark w-50 text-light p-2'>
+        <h3 className='text-center'>
+          <i className="bi bi-graph-down-arrow"></i>
+        </h3>
+        <h5 className='text-center'>Grafico de Precios (USD)</h5>
       <Line options={options} data={data} />
+      <NavLink className='nav-link text-center' to='/'>
+        <button className='btn btn-primary bg-dark border-0'>
+          <i className="bi bi-arrow-left"></i>
+        </button>
+      </NavLink>
     </div>
   );
 };
