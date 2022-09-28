@@ -1,10 +1,12 @@
-import { Header, Main } from './components/Layout';
+import { Header, Main, Footer } from './components/Layout';
+import './scss/custom.scss';
 
 const App = () => {
   return (
     <>
       <Header />
       <Main />
+      <Footer />
     </>
   );
 };

@@ -5,7 +5,7 @@ import {
 
 const Main = () => {
   return (
-    <main className='container'>
+    <main className='container-fluid bg-gray-40 px-0'>
       <Routes>
         <Route index path='/' element={<Home />} />
         <Route path='/cotizer' element={<Cotizer />} />
