@@ -1,17 +1,15 @@
 import { React, useState, useEffect } from 'react';
-import axios from 'axios';
 import { useFetch } from '../../Hooks';
 import { CriptoList, ButtonFav } from '../../components/CoinCotizer';
 
 const CoinCotizer = () => {
   const datos = useFetch('https://api.coincap.io/v2/assets');
-  const [busqueda, setBusqueda] = useState([]);
   const [coins, setCoins] = useState([]);
-  const [show, setShow] = useState(false);
-  const [show2, setShow2] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const filtrar = (terminoBusqueda) => {
-    const resultadosBusqueda = !datos?.loading && datos.data.data.filter(elemento => {
+    setIsSearching(true);
+    const resultadosBusqueda = coins.filter(elemento => {
       if (
         elemento.name
           .toString()
@@ -26,27 +24,25 @@ const CoinCotizer = () => {
       }
       return null;
     });
-    setBusqueda(resultadosBusqueda);
+    setCoins(resultadosBusqueda);
+    console.log(coins);
   };
 
-  // const getCoins = () => {
-  //   const { data } = axios('https://api.coincap.io/v2/assets');
-  //   setCoins(data);
-  // };
-  // console.log(datos);
+  useEffect(() => {
+    let coinList = [];
+    if (!datos.loading) {
+      coinList = datos?.data?.data;
+    }
+    setCoins(coinList);
+    console.log(coins);
+  }, [datos]);
 
-  // useEffect(() => {
-  //   // filtrar(datos);
-  //   // getCoins();
-  //   // console.log(datos);
-  // }, [coins]);
-  if (!datos.loading) {
-    
-    datos?.data?.data?.slice(0, 5).map(cripto => setShow2(true));
-  }
+  // if (!datos.loading) {
+  //   datos?.data?.data?.slice(0, 5).map(cripto => setShow2(true));
+  // }
+
   const handleChange = e => {
     filtrar(e.target.value);
-    setShow(true);
   };
 
   return (
@@ -73,8 +69,7 @@ const CoinCotizer = () => {
             <ButtonFav />
           </div>
           <div className='col-12 m-2 p-2 text-center'>
-            {show && <CriptoList datos={busqueda} />};
-            {show && <CriptoList datos={cripto} />};
+            <CriptoList datos={coins} isSearching={isSearching} />;
           </div>
         </div>
       </div>
