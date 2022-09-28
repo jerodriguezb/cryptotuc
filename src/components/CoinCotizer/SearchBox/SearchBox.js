@@ -3,11 +3,11 @@ import { useFetch } from '../../../Hooks';
 import CriptoList from '../CriptoList/CriptoList';
 
 const SearchBox = () => {
-  const [busqueda, setBusqueda] = useState();
   const datos = useFetch('https://api.coincap.io/v2/assets');
+  const [busqueda, setBusqueda] = useState();
+  const [show, setShow] = useState(false);
 
   const filtrar = (terminoBusqueda) => {
-    // eslint-disable-next-line array-callback-return
     const resultadosBusqueda = !datos?.loading && datos.data.data.filter(elemento => {
       if (
         elemento.name
@@ -21,17 +21,20 @@ const SearchBox = () => {
       ) {
         return elemento;
       }
+      return null;
     });
-     <CriptoList datos={resultadosBusqueda}/>;
+    console.log(resultadosBusqueda);
+    setBusqueda(resultadosBusqueda);
   };
 
-  const handleChange = e => {
-    setBusqueda(e.target.value);
-    filtrar(e.target.value);
-  };
   useEffect(() => {
-    setBusqueda();
+    filtrar(datos);
   }, []);
+
+  const handleChange = e => {
+    filtrar(e.target.value);
+    setShow(true);
+  };
 
   return (
     <div className='form'>
@@ -39,9 +42,10 @@ const SearchBox = () => {
         type='text'
         className='form-control form-input'
         placeholder='Buscar bitcoin o btc'
-        value={busqueda}
         onChange={handleChange}
       ></input>
+    {show && <CriptoList datos={busqueda}/> };
+
     </div>
   );
 };
