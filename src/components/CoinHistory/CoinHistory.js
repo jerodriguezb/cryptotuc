@@ -11,7 +11,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import useFetch from '../../hooks/useFetch/useFetch';
+import useFetch from '../../Hooks/useFetch/useFetch';
 
 const CoinHistory = ({ idCoin }) => {
   const moneda = useFetch(`https://api.coincap.io/v2/assets/${idCoin}/history?interval=h1`);

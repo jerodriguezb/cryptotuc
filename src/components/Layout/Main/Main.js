@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import classNames from 'classnames';
 import {
-  Home, Cotizer, Calculator, NotFound, Chart,
+  Home, CoinCotizer, Calculator, NotFound, Chart,
 } from '../../../pages';
 
 const Main = () => {
@@ -14,7 +14,7 @@ const Main = () => {
     })}>
       <Routes>
         <Route index path='/' element={<Home />} />
-        <Route path='/cotizer' element={<Cotizer />} />
+        <Route path='/cotizer' element={<CoinCotizer />} />
         <Route path='/calculator' element={<Calculator />} />
         <Route path='/chart' element={<Chart />} />
         <Route path='/*' element={<NotFound />} />
