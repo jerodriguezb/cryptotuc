@@ -41,15 +41,15 @@ const CoinHistory = ({ idCoin }) => {
       },
     },
   };
-  const getTimes = (cryptoCurrency) => {
-    const times = [];
-    moneda?.data?.data.slice(-24).map((value) => (
-      times.push(new Date(value.date).getHours() > 12
-        ? `${new Date(value.date).getHours() - 12}: ${new Date(value.date).getMinutes()} PM`
-        : `${new Date(value.date).getHours()}: ${new Date(value.date).getMinutes()} AM`)
-    ));
-    return times;
-  };
+  // const getTimes = (cryptoCurrency) => {
+  //   const times = [];
+  //   moneda?.data?.data.slice(-24).map((value) => (
+  //     times.push(new Date(value.date).getHours() > 12
+  //       ? `${new Date(value.date).getHours() - 12}: ${new Date(value.date).getMinutes()} PM`
+  //       : `${new Date(value.date).getHours()}: ${new Date(value.date).getMinutes()} AM`)
+  //   ));
+  //   return times;
+  // };
   const data = {
     labels: moneda?.data?.data.slice(-24).map((value) => {
       const date = new Date(value.date);

@@ -6,9 +6,10 @@ const Calculator = () => {
   const Coins = useFetch('https://api.coincap.io/v2/assets');
   const Rates = useFetch('https://api.coincap.io/v2/rates');
   const handleChange = (e) => {
+    const regex = /^[0-9]*$/;
+    const onlyNumbers = regex.test(e.target.value);
     const valor = document.getElementById('form-valor').value;
-    // console.log(valor);
-    if (valor !== '') {
+    if (onlyNumbers && valor !== '') {
       const valorCalculado = (e.target.value * document.getElementById('select-rates').value) / (document.getElementById('select-coins').value);
       document.getElementById('form-calculator').value = valorCalculado;
     }
@@ -16,7 +17,6 @@ const Calculator = () => {
   const handleChangeSelect = () => {
     const valor = document.getElementById('form-valor').value;
     if (valor !== '') {
-      // setSelecteValue(e.target.value);
       const valorCalculado = (document.getElementById('form-valor').value * document.getElementById('select-rates').value) / (document.getElementById('select-coins').value);
       document.getElementById('form-calculator').value = valorCalculado;
     }
