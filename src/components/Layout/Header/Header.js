@@ -24,8 +24,37 @@ const Header = () => {
   };
 
   const selectCountry = (countryCode) => {
+    let countryCoin = '';
     setCountry(countryCode);
-    dispatch(setCoin(countryCode));
+    switch (countryCode) {
+      case 'AR':
+        countryCoin = 'argentine-peso';
+        break;
+      case 'BR':
+        countryCoin = 'brazilian-real';
+        break;
+      case 'BO':
+        countryCoin = 'bolivian-boliviano';
+        break;
+      case 'CL':
+        countryCoin = 'chilean-peso';
+        break;
+      case 'CO':
+        countryCoin = 'colombian-peso';
+        break;
+      case 'PE':
+        countryCoin = 'peruvian-nuevo-sol';
+        break;
+      case 'US':
+        countryCoin = 'united-states-dollar';
+        break;
+      case 'UY':
+        countryCoin = 'uruguayan-peso';
+        break;
+      default:
+        break;
+    }
+    dispatch(setCoin(countryCoin));
   };
 
   const getUserCountry = async () => {
