@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+
 import ReactFlagsSelect from 'react-flags-select';
 import axios from 'axios';
+import classNames from 'classnames';
+
 import { setThemeDefault, setThemeLight } from '../../../redux/ThemeProviderRedux';
 import { setCoin } from '../../../redux/CoinProviderRedux';
 
@@ -35,7 +38,10 @@ const Header = () => {
   }, []);
 
   return (
-    <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
+    <nav className={classNames('navbar navbar-expand-lg', {
+      'navbar-light bg-light': theme === 'light',
+      'navbar-dark bg-dark': theme === 'dark',
+    })}>
       <div className='container'>
         <NavLink className='navbar-brand fs-4' to='/'><i className='bi bi-currency-bitcoin me-1'></i>CryptoTuc</NavLink>
         <button className='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation'>
@@ -53,9 +59,9 @@ const Header = () => {
                   selected={country}
                   onSelect={(code) => selectCountry(code)}
                   placeholder='Seleccione su pais'
-                  countries={['AR', 'BR', 'BO', 'CL', 'CO', 'EC', 'PE', 'PY', 'UY', 'VE']}
+                  countries={['AR', 'BR', 'BO', 'CL', 'CO', 'PE', 'US', 'UY']}
                   customLabels={{
-                    AR: 'ARS', BR: 'BRL', BO: 'BOV', CL: 'CLP', CO: 'COP', EC: 'USD', PE: 'PEN', PY: 'PYG', UY: 'UYU', VE: 'VES',
+                    AR: 'ARS', BR: 'BRL', BO: 'BOV', CL: 'CLP', CO: 'COP', PE: 'PEN', US: 'USD', UY: 'UYU',
                   }}
                 />
             </li>

@@ -1,11 +1,17 @@
+import { useSelector } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
+import classNames from 'classnames';
 import {
   Home, Cotizer, Calculator, NotFound, Chart,
 } from '../../../pages';
 
 const Main = () => {
+  const { theme } = useSelector((state) => state.theme);
   return (
-    <main className='container-fluid bg-gray-40 px-0'>
+    <main className={classNames('container-fluid px-0', {
+      'bg-gray-400': theme === 'light',
+      'bg-gray-200': theme === 'dark',
+    })}>
       <Routes>
         <Route index path='/' element={<Home />} />
         <Route path='/cotizer' element={<Cotizer />} />
