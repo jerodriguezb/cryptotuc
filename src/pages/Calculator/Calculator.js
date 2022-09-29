@@ -1,8 +1,11 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch/useFetch';
 
 const Calculator = () => {
+  const { theme } = useSelector((state) => state.theme);
   const Coins = useFetch('https://api.coincap.io/v2/assets');
   const Rates = useFetch('https://api.coincap.io/v2/rates');
   const handleChange = (e) => {
@@ -24,14 +27,30 @@ const Calculator = () => {
 
   return (
     <>
-      <div className="container my-5 bg-dark w-50 text-light p-2">
-        <h3 className='text-center'>
-          <i className="bi bi-calculator"></i>
-        </h3>
-        <h5 className='text-center'>Realiza el cálculo moneda a tu cripto favorita</h5>
+      <div className={classNames('container my-5 w-50 text-light p-2', {
+        'bg-gray-300': theme === 'light',
+        'bg-dark': theme === 'dark',
+      })}>
+        <h2 className={classNames('text-center', {
+          'text-dark': theme === 'light',
+          'text-white': theme === 'dark',
+        })}>CryptoTuc Calculadora</h2>
+        <h4 className='text-center'>
+          <i className={classNames('bi bi-calculator', {
+            'text-dark': theme === 'light',
+            'text-white': theme === 'dark',
+          })}></i>
+        </h4>
+        <h5 className={classNames('text-center', {
+          'text-dark': theme === 'light',
+          'text-white': theme === 'dark',
+        })}>Realiza el cálculo moneda a tu cripto favorita</h5>
         <form className="row g-3 p-3">
           <div className="col-md-6">
-            <label className="form-label">Seleccione moneda</label>
+            <label className={classNames('form-label', {
+              'text-dark': theme === 'light',
+              'text-white': theme === 'dark',
+            })}>Seleccione moneda</label>
             {Rates?.loading && <div className="spinner-grow text-info spinner-grow-sm ms-2" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>}
@@ -42,12 +61,18 @@ const Calculator = () => {
             </select>
           </div>
           <div className="col-md-6">
-            <label className="form-label">Ingresa un Valor</label>
+            <label className={classNames('form-label', {
+              'text-dark': theme === 'light',
+              'text-white': theme === 'dark',
+            })}>Ingresa un Valor</label>
             <input onChange={(e) => handleChange(e)}
               type="text" className="form-control form-control-md" id="form-valor" name='form-valor' />
           </div>
           <div className="col-md-6">
-            <label className="form-label">Seleccione cripto</label>
+            <label className={classNames('form-label', {
+              'text-dark': theme === 'light',
+              'text-white': theme === 'dark',
+            })}>Seleccione cripto</label>
             {Coins?.loading && <div className="spinner-grow text-info spinner-grow-sm ms-2" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>}
@@ -58,14 +83,22 @@ const Calculator = () => {
             </select>
           </div>
           <div className="col-md-6">
-            <label className="form-label">Valor calculado</label>
+            <label className={classNames('form-label', {
+              'text-dark': theme === 'light',
+              'text-white': theme === 'dark',
+            })}>Valor calculado</label>
             <input className="form-control form-control-md" type="text"
               id="form-calculator" name="form-calculator" readOnly="readonly" />
           </div>
           <NavLink className='nav-link text-center' to='/'>
-            <button className='btn btn-primary bg-dark border-0'>
-              <i className="bi bi-arrow-left"></i>
-            </button>
+            {/* <button className='btn btn-primary border-0'>
+            </button> */}
+            <h4 className=''>
+              <i className={classNames('bi bi-arrow-left', {
+                'text-dark': theme === 'light',
+                'text-white': theme === 'dark',
+              })}></i>
+            </h4>
           </NavLink>
         </form>
       </div>
