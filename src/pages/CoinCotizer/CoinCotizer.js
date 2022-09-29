@@ -5,11 +5,12 @@ import { CriptoList, ButtonFav } from '../../components/CoinCotizer';
 const CoinCotizer = () => {
   const datos = useFetch('https://api.coincap.io/v2/assets');
   const [coins, setCoins] = useState([]);
+  const [coinslist, setCoinsList] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
 
   const filtrar = (terminoBusqueda) => {
     setIsSearching(true);
-    const resultadosBusqueda = coins.filter(elemento => {
+    const resultadosBusqueda = coinslist.filter(elemento => {
       if (
         elemento.name
           .toString()
@@ -25,21 +26,14 @@ const CoinCotizer = () => {
       return null;
     });
     setCoins(resultadosBusqueda);
-    console.log(coins);
   };
 
   useEffect(() => {
-    let coinList = [];
     if (!datos.loading) {
-      coinList = datos?.data?.data;
+      setCoinsList(datos?.data?.data);
     }
-    setCoins(coinList);
-    console.log(coins);
+    setCoins(coinslist);
   }, [datos]);
-
-  // if (!datos.loading) {
-  //   datos?.data?.data?.slice(0, 5).map(cripto => setShow2(true));
-  // }
 
   const handleChange = e => {
     filtrar(e.target.value);
