@@ -4,8 +4,8 @@ const coinSlice = createSlice({
   name: 'coin',
   initialState: {},
   reducers: {
-    setCharacters(state, action) {
-      state.results = action.payload.data.results;
+    setCoin(state, action) {
+      state.coin = action.payload;
     },
   },
 });
