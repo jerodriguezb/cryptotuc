@@ -1,8 +1,10 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch/useFetch';
 
 const Calculator = () => {
+  const { coinId } = useParams();
+  console.log(coinId);
   const Coins = useFetch('https://api.coincap.io/v2/assets');
   const Rates = useFetch('https://api.coincap.io/v2/rates');
   const handleChange = (e) => {
