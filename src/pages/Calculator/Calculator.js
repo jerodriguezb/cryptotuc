@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import useFetch from '../../Hooks/useFetch/useFetch';
+import useFetch from '../../hooks/useFetch/useFetch';
 
 const Calculator = () => {
-  const Coins = useFetch('https://api.coinpncap.io/v2/assets');
+  const Coins = useFetch('https://api.coincap.io/v2/assets');
   const Rates = useFetch('https://api.coincap.io/v2/rates');
   const handleChange = (e) => {
     const regex = /^[0-9]*$/;

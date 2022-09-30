@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { useFetch } from '../../Hooks';
+import { useFetch } from '../../hooks';
 import { CriptoList, ButtonFav } from '../../components/CoinCotizer';
 
 const CoinCotizer = () => {
