@@ -68,7 +68,7 @@ const Header = () => {
 
   return (
     <nav className={classNames('navbar navbar-expand-lg', {
-      'navbar-light bg-light': theme === 'light',
+      'navbar-light bg-gray-200': theme === 'light',
       'navbar-dark bg-dark': theme === 'dark',
     })}>
       <div className='container'>
@@ -95,7 +95,7 @@ const Header = () => {
                 />
             </li>
             {theme === 'light' ? (
-              <li className='nav-item pt-1'><button className='btn btn-dark' onClick={() => setDefault()}><i className='bi bi-lightbulb-fill'></i></button></li>)
+              <li className='nav-item pt-1'><button className='btn btn-light' onClick={() => setDefault()}><i className='bi bi-lightbulb-fill'></i></button></li>)
               : (<li className='nav-item pt-1'><button className='btn btn-dark' onClick={() => setLight()}><i className='bi bi-lightbulb'></i></button></li>)}
           </ul>
         </div>
