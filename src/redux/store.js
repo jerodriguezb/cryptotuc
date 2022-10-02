@@ -1,8 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import themeSlice from './ThemeProviderRedux';
 import coinSlice from './CoinProviderRedux';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     theme: themeSlice,
     coin: coinSlice,
@@ -10,4 +10,14 @@ const store = configureStore({
   devTools: true,
 });
 
-export default store;
+const rootReducer = combineReducers({
+  theme: themeSlice,
+  coin: coinSlice,
+});
+
+export const setupStore = preloadedState => {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  });
+};
