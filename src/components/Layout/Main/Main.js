@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import {
   Home, CoinCotizer, Calculator, NotFound, Chart,
 } from '../../../pages';
+import './index.css';
 
 const Main = () => {
   const { theme } = useSelector((state) => state.theme);
