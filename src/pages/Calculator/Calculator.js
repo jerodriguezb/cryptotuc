@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch/useFetch';
+// Changes
 
 const Calculator = () => {
   const { coin } = useSelector((state) => state.coin);
