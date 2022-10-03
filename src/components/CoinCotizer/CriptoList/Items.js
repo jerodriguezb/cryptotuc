@@ -29,7 +29,7 @@ const Items = ({
         <div className='fw-bold'>{symbol}</div>
       </div>
       <div className='me-3'>
-        <span className='fs-3 m-1'> {usdcoin.currencySymbol} {(usdcoin.rateUsd * price).toFixed(2)}</span>
+        <span className='fs-3 m-1'> {usdcoin.currencySymbol} {(price / usdcoin.rateUsd).toFixed(2)}</span>
       </div>
       <div className='d-flex flex-row'>
         <i className='fs-3 m-1 p-1 bi bi-star'></i>
