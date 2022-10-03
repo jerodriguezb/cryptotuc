@@ -1,8 +1,11 @@
+import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 import { React, useState, useEffect } from 'react';
 import { useFetch } from '../../hooks';
 import { CriptoList, ButtonFav, SearchBox } from '../../components/CoinCotizer';
 
 const CoinCotizer = () => {
+  const { theme } = useSelector((state) => state.theme);
   const datos = useFetch('https://api.coincap.io/v2/assets');
   const [allCoins, setAllCoins] = useState([]);
   const [filteredCoins, setFilteredCoins] = useState([]);
@@ -12,14 +15,19 @@ const CoinCotizer = () => {
       setAllCoins(datos?.data?.data);
     }
     setFilteredCoins(allCoins);
-    console.log(datos);
   }, [datos]);
 
   return (
     <>
-      <div className='container col-6 my-4 pe-4 bg-dark'>
+      <div className={classNames('container col-6 my-4 pe-4', {
+        'bg-gray-300': theme === 'light',
+        'bg-dark': theme === 'dark',
+      })}>
         <div className='col-12'>
-          <h5 className='m-2 p-2 text-light text-center'>
+          <h5 className={ classNames('m-2 p-2 text-center', {
+            'text-dark': theme === 'light',
+            'bg-dark text-light': theme === 'dark',
+          })}>
             Cotización en tiempo real de las principales criptomonedas.
             Seguimiento de la evolución de su precio y valor de mercado
           </h5>
