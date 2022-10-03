@@ -95,8 +95,8 @@ const Header = () => {
                 />
             </li>
             {theme === 'light' ? (
-              <li className='nav-item pt-1'><button className='btn btn-light' onClick={() => setDefault()}><i className='bi bi-lightbulb-fill'></i></button></li>)
-              : (<li className='nav-item pt-1'><button className='btn btn-dark' onClick={() => setLight()}><i className='bi bi-lightbulb'></i></button></li>)}
+              <li className='nav-item pt-1'><button data-testid='theme-switch' className='btn btn-light' onClick={() => setDefault()}><i className='bi bi-lightbulb-fill'></i></button></li>)
+              : (<li className='nav-item pt-1'><button data-testid='theme-switch' className='btn btn-dark' onClick={() => setLight()}><i className='bi bi-lightbulb'></i></button></li>)}
           </ul>
         </div>
       </div>
