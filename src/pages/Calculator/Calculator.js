@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch/useFetch';
 
 const Calculator = () => {
+  const { coinId } = useParams();
+  console.log(coinId);
   const { coin } = useSelector((state) => state.coin);
   const { theme } = useSelector((state) => state.theme);
+
   const Coins = useFetch('https://api.coincap.io/v2/assets');
   const Rates = useFetch('https://api.coincap.io/v2/rates');
   const [changeCoin, setchangeCoin] = useState(coin);
