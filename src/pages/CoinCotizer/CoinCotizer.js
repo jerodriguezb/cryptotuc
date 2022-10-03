@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { React, useState, useEffect } from 'react';
 import { useFetch } from '../../hooks';
-import { CriptoList, ButtonFav, SearchBox } from '../../components/CoinCotizer';
+import { CriptoList, SearchBox } from '../../components/CoinCotizer';
 
 const CoinCotizer = () => {
   const { theme } = useSelector((state) => state.theme);
@@ -36,9 +36,6 @@ const CoinCotizer = () => {
           <div className='d-flex flex-row justify-content-between'>
             <div className='col-md-6 col-12 m-2 p-2'>
               <SearchBox allCoins={allCoins} setFilteredCoins={setFilteredCoins} />
-            </div>
-            <div className='col-md-3 col-12 m-2 p-2 text-end'>
-              <ButtonFav />
             </div>
           </div>
           <div className='col-12 m-2 p-2 text-center'>
