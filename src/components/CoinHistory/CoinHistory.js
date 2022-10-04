@@ -68,7 +68,7 @@ const CoinHistory = ({ idCoin }) => {
     ],
   };
   return (
-    <div className='container my-5 bg-dark w-50 text-light p-2'>
+    <div className='col-12 px-4 col-md-8 px-md-0 my-4 mx-auto bg-dark text-light'>
         <h3 className='text-center'>
           <i className="bi bi-graph-down-arrow"></i>
         </h3>
