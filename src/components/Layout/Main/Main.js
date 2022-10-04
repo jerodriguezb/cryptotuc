@@ -17,6 +17,7 @@ const Main = () => {
         <Route index path='/' element={<Home />} />
         <Route path='/cotizer' element={<CoinCotizer />} />
         <Route path='/calculator' element={<Calculator />} />
+        <Route path='/calculator/:coinId' element={<Calculator />} />
         <Route path='/chart' element={<Chart />} />
         <Route path='/*' element={<NotFound />} />
       </Routes>
