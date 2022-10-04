@@ -67,7 +67,7 @@ const Header = () => {
   }, []);
 
   return (
-    <nav className={classNames('navbar navbar-expand-lg', {
+    <nav data-testid='navbar-test' className={classNames('navbar navbar-expand-lg', {
       'navbar-light bg-gray-200': theme === 'light',
       'navbar-dark bg-dark': theme === 'dark',
     })}>
