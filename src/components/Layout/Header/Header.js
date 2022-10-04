@@ -3,71 +3,66 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import ReactFlagsSelect from 'react-flags-select';
-import axios from 'axios';
 import classNames from 'classnames';
+import useFetch from '../../../hooks/useFetch/useFetch';
 
 import { setThemeDefault, setThemeLight } from '../../../redux/ThemeProviderRedux';
 import { setCoin } from '../../../redux/CoinProviderRedux';
 
 const Header = () => {
-  const [country, setCountry] = useState('');
-
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.theme);
 
-  const setDefault = () => {
-    dispatch(setThemeDefault());
-  };
-
-  const setLight = () => {
-    dispatch(setThemeLight());
-  };
+  const [country, setCountry] = useState('');
+  const ipData = useFetch('https://ipapi.co/json/');
+  const countryData = [{
+    code: 'AR',
+    coin: 'argentine-peso',
+  },
+  {
+    code: 'BR',
+    coin: 'brazilian-real',
+  },
+  {
+    code: 'BO',
+    coin: 'bolivian-boliviano',
+  },
+  {
+    code: 'CL',
+    coin: 'chilean-peso',
+  },
+  {
+    code: 'CO',
+    coin: 'colombian-peso',
+  },
+  {
+    code: 'PE',
+    coin: 'peruvian-nuevo-sol',
+  },
+  {
+    code: 'US',
+    coin: 'united-states-dollar',
+  },
+  {
+    code: 'UY',
+    coin: 'uruguayan-peso',
+  },
+  ];
 
   const selectCountry = (countryCode) => {
-    let countryCoin = '';
     setCountry(countryCode);
-    switch (countryCode) {
-      case 'AR':
-        countryCoin = 'argentine-peso';
-        break;
-      case 'BR':
-        countryCoin = 'brazilian-real';
-        break;
-      case 'BO':
-        countryCoin = 'bolivian-boliviano';
-        break;
-      case 'CL':
-        countryCoin = 'chilean-peso';
-        break;
-      case 'CO':
-        countryCoin = 'colombian-peso';
-        break;
-      case 'PE':
-        countryCoin = 'peruvian-nuevo-sol';
-        break;
-      case 'US':
-        countryCoin = 'united-states-dollar';
-        break;
-      case 'UY':
-        countryCoin = 'uruguayan-peso';
-        break;
-      default:
-        break;
-    }
-    dispatch(setCoin(countryCoin));
-  };
-
-  const getUserCountry = async () => {
-    const { data } = await axios('https://ipapi.co/json/');
-    selectCountry(data.country_code);
+    const selectedCountry = countryData.find(sCountry => sCountry.code === countryCode);
+    dispatch(setCoin(selectedCountry.coin));
   };
 
   useEffect(() => {
-    getUserCountry();
-  }, []);
+    if (!ipData.loading) {
+      selectCountry(ipData.data.country_code);
+    }
+  }, [ipData]);
 
   return (
-    <nav className={classNames('navbar navbar-expand-lg', {
+    <nav data-testid='navbar-test' className={classNames('navbar navbar-expand-lg', {
       'navbar-light bg-gray-200': theme === 'light',
       'navbar-dark bg-dark': theme === 'dark',
     })}>
@@ -95,8 +90,10 @@ const Header = () => {
                 />
             </li>
             {theme === 'light' ? (
-              <li className='nav-item pt-1'><button data-testid='theme-switch' className='btn btn-light' onClick={() => setDefault()}><i className='bi bi-lightbulb-fill'></i></button></li>)
-              : (<li className='nav-item pt-1'><button data-testid='theme-switch' className='btn btn-dark' onClick={() => setLight()}><i className='bi bi-lightbulb'></i></button></li>)}
+              <li className='nav-item pt-1'><button data-testid='theme-switch' className='btn btn-light'
+                onClick={() => dispatch(setThemeDefault())}><i className='bi bi-lightbulb-fill'></i></button></li>)
+              : (<li className='nav-item pt-1'><button data-testid='theme-switch' className='btn btn-dark'
+                onClick={() => dispatch(setThemeLight())}><i className='bi bi-lightbulb'></i></button></li>)}
           </ul>
         </div>
       </div>

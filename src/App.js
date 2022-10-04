@@ -3,11 +3,11 @@ import './scss/custom.scss';
 
 const App = () => {
   return (
-    <>
+    <div data-testid='app'>
       <Header />
       <Main />
       <Footer />
-    </>
+    </div>
   );
 };
 
