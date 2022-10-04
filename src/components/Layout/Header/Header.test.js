@@ -11,11 +11,9 @@ describe('Header Test', () => {
     expect(element).toBeInTheDocument();
   });
 
-  test('Deberia renderizar el componente Header', () => {
-    const selectCountry = jest.fn();
+  test('Deberia renderizar el componente Header', async () => {
     renderWithProviders(<BrowserRouter><Header /></BrowserRouter>);
-
-    expect(selectCountry).toHaveBeenCalled();
+    await screen.findByText('ARS');
   });
 
   test('Deberia renderizar el componente Header y cambiarlo a theme Light', () => {
