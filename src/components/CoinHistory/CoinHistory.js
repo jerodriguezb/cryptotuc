@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import {
@@ -12,20 +11,12 @@ import {
   Legend,
 } from 'chart.js';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
 import useFetch from '../../hooks/useFetch/useFetch';
 
-const CoinHistory = () => {
-  const { theme } = useSelector((state) => state.theme);
-
-  const [allCoins, setAllCoins] = useState([]);
-  const [selectedCoin, setSelectedCoin] = useState(useSelector((state) => state.coin));
-  const [allCryptos, setAllCryptos] = useState([]);
-  const [selectedCrypto, setSelectedCrypto] = useState([]);
-
+const CoinHistory = ({
+  selectedCrypto, setSelectedCrypto, selectedCoin, allCryptos, theme,
+}) => {
   const moneda = useFetch(`https://api.coincap.io/v2/assets/${selectedCrypto}/history?interval=h1`);
-  const coins = useFetch('https://api.coincap.io/v2/assets');
-  const rates = useFetch('https://api.coincap.io/v2/rates');
 
   ChartJS.register(
     CategoryScale,
@@ -77,23 +68,15 @@ const CoinHistory = () => {
     setSelectedCrypto(ev.target.value);
   };
 
-  useEffect(() => {
-    if (!coins.loading && !rates.loading) {
-      setAllCryptos(coins?.data?.data);
-      setAllCoins(rates?.data?.data);
-    }
-  }, [coins, rates]);
-
   return (
     <div className={classNames('col-12 col-md-8 p-4 px-md-0 my-4 mx-auto', {
       'bg-light text-dark': theme === 'light',
       'bg-dark text-light': theme === 'dark',
     })}>
       <h3 className='text-center'><i className='bi bi-graph-down-arrow'></i></h3>
-      <h5 className='text-center'>Grafico de Precios (USD)</h5>
+      <h5 className='text-center'>Grafico de Precios</h5>
       <div className='d-flex col-8 mx-auto'>
         <select className='form-select' onChange={(ev) => handleChange(ev)} aria-label='Cryptocurrency selector'>
-          <option defaultValue>Seleccione una criptomoneda</option>
           {allCryptos.map(currency => <option key={currency.id}
                 value={currency.id}>{currency.symbol}</option>)}
         </select>
