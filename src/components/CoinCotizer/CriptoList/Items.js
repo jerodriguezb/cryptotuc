@@ -11,17 +11,12 @@ const Items = ({
   const Rates = useFetch('https://api.coincap.io/v2/rates');
   const { theme } = useSelector((state) => state.theme);
   const { coin } = useSelector((state) => state.coin);
-  const usdcoin = !Rates?.loading && Rates?.data?.data?.find((element) => {
-    if (element.id === coin) {
-      return element.rateUsd;
-    }
-    return null;
-  });
+  const usdcoin = !Rates?.loading && Rates?.data?.data?.find(element => element.id === coin);
 
   return (
     <li key={id} className={classNames('list-group-item  d-flex justify-content-between align-items-start m-2 rounded', {
-      'bg-gray-700 text-light': theme === 'light',
-      'bg-gray-300': theme === 'dark',
+      'bg-gray-400': theme === 'light',
+      'bg-gray-800 text-light': theme === 'dark',
     })}>
       <CriptoLogo symbol={symbol} />
       <div className='ms-2 me-auto'>
@@ -33,9 +28,9 @@ const Items = ({
       </div>
       <div className='d-flex flex-row'>
         <i className='fs-3 m-1 p-1 bi bi-star'></i>
-        <Link to={`/calculator/${coinId}`} className='btn'><i className={classNames('bi bi-calculator mb-0 fs-2', {
-          'text-light': theme === 'light',
-          'text-dark': theme === 'dark',
+        <Link data-testid='calcButton' to={`/calculator/${coinId}`} className='btn'><i className={classNames('bi bi-calculator mb-0 fs-2', {
+          'text-dark': theme === 'light',
+          'text-light': theme === 'dark',
         })}></i></Link>
       </div>
     </li>
