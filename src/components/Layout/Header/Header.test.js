@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { renderWithProviders } from '../../../utils/test/test-utils';
 import Header from './Header';
@@ -11,9 +11,9 @@ describe('Header Test', () => {
     expect(element).toBeInTheDocument();
   });
 
-  test('Deberia renderizar el componente Header', async () => {
+  test('Deberia renderizar el componente Header', () => {
     renderWithProviders(<BrowserRouter><Header /></BrowserRouter>);
-    await screen.findByText('ARS');
+    expect(screen.getByText('ARS')).toBeInTheDocument();
   });
 
   test('Deberia renderizar el componente Header y cambiarlo a theme Light', () => {

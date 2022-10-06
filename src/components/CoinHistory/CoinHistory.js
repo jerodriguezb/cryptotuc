@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -11,12 +12,17 @@ import {
   Legend,
 } from 'chart.js';
 import classNames from 'classnames';
+import { useEffect, useState } from 'react';
 import useFetch from '../../hooks/useFetch/useFetch';
 
-const CoinHistory = ({
-  selectedCrypto, setSelectedCrypto, selectedCoin, allCryptos, theme,
-}) => {
-  const moneda = useFetch(`https://api.coincap.io/v2/assets/${selectedCrypto}/history?interval=h1`);
+const CoinHistory = () => {
+  const { theme } = useSelector((state) => state.theme);
+  const { coin } = useSelector((state) => state.coin);
+
+  const [allCryptos, setAllCryptos] = useState([]);
+  const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
+  const coins = useFetch('https://api.coincap.io/v2/assets');
+  const historyData = useFetch(`https://api.coincap.io/v2/assets/${selectedCrypto}/history?interval=h1`);
 
   ChartJS.register(
     CategoryScale,
@@ -30,6 +36,7 @@ const CoinHistory = ({
 
   const options = {
     responsive: true,
+    type: 'chart',
     plugins: {
       legend: {
         position: 'top',
@@ -46,8 +53,9 @@ const CoinHistory = ({
     },
   };
 
+  /* istanbul ignore next */
   const data = {
-    labels: moneda?.data?.data.slice(-24).map((value) => {
+    labels: historyData?.data?.data?.slice(-24).map((value) => {
       const date = new Date(value.date);
       const time = date.getHours() > 12
         ? `${date.getHours() - 12}: ${date.getMinutes()} PM`
@@ -56,8 +64,8 @@ const CoinHistory = ({
     }),
     datasets: [
       {
-        label: 'Precio (ultimas 24 horas) en USD',
-        data: moneda?.data?.data.slice(-24).map((value) => value.priceUsd),
+        label: `Precio (ultimas 24 horas) en ${coin?.symbol}`,
+        data: historyData?.data?.data?.slice(-24).map((value) => (value.priceUsd / coin.rateUsd)),
         borderColor: 'rgb(255, 207, 64)',
         backgroundColor: 'rgba(255, 207, 64, 0.5)',
       },
@@ -68,21 +76,27 @@ const CoinHistory = ({
     setSelectedCrypto(ev.target.value);
   };
 
+  useEffect(() => {
+    if (!coins.loading) {
+      setAllCryptos(coins?.data?.data);
+    }
+  }, [coins]);
+
   return (
-    <div className={classNames('col-12 col-md-8 p-4 px-md-0 my-4 mx-auto', {
+    <div data-testid='graphic' className={classNames('col-12 col-md-8 p-4 px-md-0 my-4 mx-auto', {
       'bg-light text-dark': theme === 'light',
       'bg-dark text-light': theme === 'dark',
     })}>
       <h3 className='text-center'><i className='bi bi-graph-down-arrow'></i></h3>
-      <h5 className='text-center'>Grafico de Precios</h5>
+      <h4 className='text-center'>Grafico de Precios</h4>
       <div className='d-flex col-8 mx-auto'>
-        <select className='form-select' onChange={(ev) => handleChange(ev)} aria-label='Cryptocurrency selector'>
-          {allCryptos.map(currency => <option key={currency.id}
+        <select data-testid='crypto-selector'className='form-select' onChange={(ev) => handleChange(ev)} aria-label='Cryptocurrency selector'>
+          {allCryptos && allCryptos?.map(currency => <option key={currency.id}
                 value={currency.id}>{currency.symbol}</option>)}
         </select>
       </div>
       <Line className='p-2' options={options} data={data} />
-      <NavLink className='nav-link text-center' to='/'>
+      <NavLink className='chart nav-link text-center' to='/'>
         <button className={classNames('btn', {
           'btn-light border border-1 border-dark': theme === 'light',
           'btn-dark': theme === 'dark',
