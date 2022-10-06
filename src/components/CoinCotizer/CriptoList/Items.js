@@ -28,7 +28,7 @@ const Items = ({
       </div>
       <div className='d-flex flex-row'>
         <i className='fs-3 m-1 p-1 bi bi-star'></i>
-        <Link to={`/calculator/${coinId}`} className='btn'><i className={classNames('bi bi-calculator mb-0 fs-2', {
+        <Link data-testid='calcButton' to={`/calculator/${coinId}`} className='btn'><i className={classNames('bi bi-calculator mb-0 fs-2', {
           'text-dark': theme === 'light',
           'text-light': theme === 'dark',
         })}></i></Link>
