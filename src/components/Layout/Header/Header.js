@@ -14,6 +14,8 @@ const Header = () => {
   const { theme } = useSelector((state) => state.theme);
 
   const [country, setCountry] = useState('');
+  const [allCoins, setAllCoins] = useState([]);
+  const rates = useFetch('https://api.coincap.io/v2/rates');
   const ipData = useFetch('https://ipapi.co/json/');
   const countryData = [{
     code: 'AR',
@@ -49,17 +51,18 @@ const Header = () => {
   },
   ];
 
-  const selectCountry = (countryCode) => {
+  const selectCountry = async (countryCode) => {
     setCountry(countryCode);
     const selectedCountry = countryData.find(sCountry => sCountry.code === countryCode);
-    dispatch(setCoin(selectedCountry.coin));
+    await dispatch(setCoin(allCoins.find(sCountry => sCountry.id === selectedCountry.coin)));
   };
 
   useEffect(() => {
-    if (!ipData.loading) {
-      selectCountry(ipData.data.country_code);
+    if (!ipData?.loading && !rates?.loading) {
+      setAllCoins(rates?.data?.data);
+      selectCountry(ipData?.data?.country_code);
     }
-  }, [ipData]);
+  }, [ipData, rates]);
 
   return (
     <nav data-testid='navbar-test' className={classNames('navbar navbar-expand-lg', {
