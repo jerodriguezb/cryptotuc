@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { renderWithProviders } from '../../../utils/test/test-utils';
 import Header from './Header';

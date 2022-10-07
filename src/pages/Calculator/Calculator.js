@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
@@ -13,21 +13,21 @@ const Calculator = () => {
   const Coins = useFetch('https://api.coincap.io/v2/assets');
   const Rates = useFetch('https://api.coincap.io/v2/rates');
   const [changeCoin, setchangeCoin] = useState(coin);
+  const inputCoinRef = useRef();
+  const resultValue = useRef();
 
   const handleChange = (e) => {
     const regex = /^[0-9]*$/;
     const onlyNumbers = regex.test(e.target.value);
-    const valor = document.getElementById('form-valor').value;
-    if (onlyNumbers && valor !== '') {
+    if (onlyNumbers && inputCoinRef.current.value !== '') {
       const valorCalculado = (e.target.value * document.getElementById('select-rates').value) / (document.getElementById('select-coins').value);
-      document.getElementById('form-calculator').value = valorCalculado;
+      resultValue.current.value = valorCalculado;
     }
   };
   const handleChangeSelect = () => {
-    const valor = document.getElementById('form-valor').value;
-    if (valor !== '') {
-      const valorCalculado = (document.getElementById('form-valor').value * document.getElementById('select-rates').value) / (document.getElementById('select-coins').value);
-      document.getElementById('form-calculator').value = valorCalculado;
+    if (inputCoinRef.current.value !== '') {
+      const valorCalculado = (inputCoinRef.current.value * document.getElementById('select-rates').value) / (document.getElementById('select-coins').value);
+      resultValue.current.value = valorCalculado;
     }
   };
 
@@ -35,6 +35,10 @@ const Calculator = () => {
     setchangeCoin(coin);
     handleChangeSelect();
   }, [coin, changeCoin]);
+
+  useEffect(() => {
+    inputCoinRef.current.focus();
+  }, []);
 
   return (
     <>
@@ -78,7 +82,7 @@ const Calculator = () => {
               'text-dark': theme === 'light',
               'text-white': theme === 'dark',
             })}>Ingrese Valor</label>
-            <input onChange={(e) => handleChange(e)}
+            <input ref={inputCoinRef} onChange={(e) => handleChange(e)}
               type="text" className="form-control form-control-md" id="form-valor" name='form-valor' />
           </div>
           <div className="col-md-6">
@@ -99,7 +103,7 @@ const Calculator = () => {
               'text-dark': theme === 'light',
               'text-white': theme === 'dark',
             })}>Valor calculado</label>
-            <input className="form-control form-control-md" type="text"
+            <input ref={resultValue} className="form-control form-control-md" type="text"
               id="form-calculator" name="form-calculator" readOnly="readonly" />
           </div>
           <NavLink className='nav-link text-center' to='/'>
