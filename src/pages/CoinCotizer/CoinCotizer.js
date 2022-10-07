@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { React, useState, useEffect } from 'react';
-import { useFetch } from '../../hooks';
+import useFetch from '../../hooks/useFetch/useFetch';
 import { CriptoList, SearchBox } from '../../components/CoinCotizer';
 
 const CoinCotizer = () => {
