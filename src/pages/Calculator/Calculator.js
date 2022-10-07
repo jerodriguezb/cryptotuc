@@ -31,7 +31,6 @@ const Calculator = () => {
   useEffect(() => {
     setSelectedCoinRate(coinSelectorRef.current.value * 1);
     setSelectedCryptoValue(cryptoSelectorRef.current.value * 1);
-    console.log(coinSelectorRef.current);
   }, [Coins, Rates]);
 
   useEffect(() => {

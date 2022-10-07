@@ -26,7 +26,7 @@ describe('Calculator Test', () => {
       fireEvent.change(cryptoSelector, { target: { value: 'USD' } });
       expect(screen.getByText('USD')).toBeInTheDocument();
 
-      fireEvent.change(coinInput, { target: { value: '3' } });
+      fireEvent.change(coinInput, { target: { value: '3000000' } });
       expect(cryptoInput.value * 1).toBeGreaterThanOrEqual(0);
     });
   });
