@@ -1,54 +1,33 @@
 import React from 'react';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { renderWithProviders } from '../../utils/test/test-utils';
 import Calculator from './Calculator';
 
-test('Simulates selection', () => {
-  const { getByTestId, getAllByTestId } = renderWithProviders(<BrowserRouter>
-  <Calculator /></BrowserRouter>);
-  // The value should be the key of the option
-  fireEvent.change(getByTestId('select-coins'), { target: { value: 'bitcoin' } });
-  const options = getAllByTestId('select-coins');
-  expect(options[0].selected).toBe('bitcoin');
+describe('Calculator Test', () => {
+  test('Deberia renderizar el componente Calculator', async () => {
+    renderWithProviders(<BrowserRouter><Calculator /></BrowserRouter>);
+    const element = screen.getByText('Calculadora');
+
+    expect(element).toBeInTheDocument();
+  });
+
+  test('Deberia simular una conversion involucrando a todos los elementos de la calculadora', async () => {
+    renderWithProviders(<BrowserRouter><Calculator /></BrowserRouter>);
+    const coinSelector = screen.getByTestId('coin-selector');
+    const cryptoSelector = screen.getByTestId('crypto-selector');
+    const coinInput = screen.getByTestId('coin-value');
+    const cryptoInput = screen.getByTestId('crypto-value');
+
+    await waitFor(() => {
+      fireEvent.change(coinSelector, { target: { value: 'ARS' } });
+      expect(screen.getByText('ARS')).toBeInTheDocument();
+
+      fireEvent.change(cryptoSelector, { target: { value: 'USD' } });
+      expect(screen.getByText('USD')).toBeInTheDocument();
+
+      fireEvent.change(coinInput, { target: { value: '3000000' } });
+      expect(cryptoInput.value * 1).toBeGreaterThanOrEqual(0);
+    });
+  });
 });
-
-// describe('NotFound page test', () => {
-//   test('Deberia renderizar Crypto Calculator', () => {
-//     renderWithProviders(<BrowserRouter><Calculator /></BrowserRouter>);
-//     const element = screen.getByText('Seleccione moneda');
-
-//     expect(element).toBeInTheDocument();
-//   });
-// });
-
-// test('Simulates selection Rates', () => {
-//   const { getByTestId, getAllByTestId } = renderWithProviders(<BrowserRouter>
-//    <Calculator /></BrowserRouter>);
-//   fireEvent.change(getByTestId('select-rates'), { target: { value: 'argentine-peso' } });
-//   const options = getAllByTestId('select-rates');
-//   expect(options[0].selected).toBe('argentine-peso');
-// });
-
-// describe('Calculator Test', () => {
-//   test('Deberia devolver un valor float', () => {
-//     renderWithProviders(<Calculator />);
-//     const valorCalculado = 0.0222;
-//     expect(typeof valorCalculado === 'number').toBe(true);
-//   });
-// });
-
-// test('Only Numbers', () => {
-//   const val = 0;
-//   // eslint-disable-next-line prefer-regex-literals
-//   const regX = new RegExp(/^[0-9]*$/);
-//   expect(val).toBeTruthy(regX);
-// });
-
-// test('Simulates selection Rates', async () => {
-//   renderWithProviders(<BrowserRouter> <Calculator /></BrowserRouter>);
-//   const val = 'argentine-peso';
-//   fireEvent.click(screen.findByTestId('select-rates'));
-//   await fireEvent.click(screen.getByText(val));
-//   expect(val).toBeInTheDocument();
-// });

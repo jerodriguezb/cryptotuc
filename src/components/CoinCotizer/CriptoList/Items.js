@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CriptoLogo from '../CriptoLogo/CriptoLogo';
-import { useFetch } from '../../../hooks';
+import useFetch from '../../../hooks/useFetch/useFetch';
 
 const Items = ({
   id, coinId, name, symbol, price,
