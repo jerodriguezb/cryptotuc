@@ -7,4 +7,5 @@ describe('SeachBox Test', () => {
     renderWithProviders(<SearchBox/>);
     const element = screen.getByText('Buscar bitcoin o btc');
     expect(element).toBeInTheDocument();
+  });
 });

@@ -51,10 +51,10 @@ const Header = () => {
   },
   ];
 
-  const selectCountry = async (countryCode) => {
+  const selectCountry = (countryCode) => {
     setCountry(countryCode);
     const selectedCountry = countryData.find(sCountry => sCountry.code === countryCode);
-    await dispatch(setCoin(allCoins.find(sCountry => sCountry.id === selectedCountry.coin)));
+    dispatch(setCoin(allCoins.find(sCountry => sCountry.id === selectedCountry.coin)));
   };
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const Header = () => {
                   placeholder='Seleccione su pais'
                   countries={['AR', 'BR', 'BO', 'CL', 'CO', 'PE', 'US', 'UY']}
                   customLabels={{
-                    AR: 'ARS', BR: 'BRL', BO: 'BOV', CL: 'CLP', CO: 'COP', PE: 'PEN', US: 'USD', UY: 'UYU',
+                    AR: 'ARS', BR: 'BRL', BO: 'BOB', CL: 'CLP', CO: 'COP', PE: 'PEN', US: 'USD', UY: 'UYU',
                   }}
                 />
             </li>
