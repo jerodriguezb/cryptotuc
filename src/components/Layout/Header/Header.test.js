@@ -11,23 +11,33 @@ describe('Header Test', () => {
     expect(element).toBeInTheDocument();
   });
 
-  test('Deberia renderizar el componente Header con theme Dark', () => {
-    const setDefault = jest.fn();
-
+  test('Deberia renderizar el componente Header', () => {
     renderWithProviders(<BrowserRouter><Header /></BrowserRouter>);
-    const element = screen.getByTestId('theme-switch');
-    fireEvent.click(element);
-
-    expect(setDefault).toHaveBeenCalled();
+    expect(screen.getByText('ARS')).toBeInTheDocument();
   });
 
-  test('Deberia renderizar el componente Header con theme Light', () => {
-    const setLight = jest.fn();
-
+  test('Deberia renderizar el componente Header y cambiarlo a theme Light', () => {
     renderWithProviders(<BrowserRouter><Header /></BrowserRouter>);
     const element = screen.getByTestId('theme-switch');
     fireEvent.click(element);
 
-    expect(setLight).toHaveBeenCalled();
+    expect(element).toHaveClass('btn-light');
+  });
+
+  test('Deberia renderizar el componente Header y cambiarlo a theme Dark', () => {
+    renderWithProviders(<BrowserRouter><Header /></BrowserRouter>);
+    const element = screen.getByTestId('theme-switch');
+    fireEvent.click(element);
+    fireEvent.click(element);
+
+    expect(element).toHaveClass('btn-dark');
+  });
+
+  test('Deberia renderizar el componente Header y llamar la funcion selectCountry', () => {
+    renderWithProviders(<BrowserRouter><Header /></BrowserRouter>);
+    const element = screen.getByTestId('rfs-btn');
+    fireEvent.click(element);
+    fireEvent.click(screen.getByText('USD'));
+    expect(screen.getByText('USD')).toBeInTheDocument();
   });
 });

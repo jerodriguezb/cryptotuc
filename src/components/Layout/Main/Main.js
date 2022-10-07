@@ -9,7 +9,7 @@ import './index.css';
 const Main = () => {
   const { theme } = useSelector((state) => state.theme);
   return (
-    <main className={classNames('container-fluid px-0', {
+    <main data-testid='main' className={classNames('container-fluid px-0', {
       'bg-gray-400': theme === 'light',
       'bg-gray-200': theme === 'dark',
     })}>
