@@ -3,35 +3,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { renderWithProviders } from '../../utils/test/test-utils';
 import Calculator from './Calculator';
-
-const coinsMockData = [{
-  id: 'bitcoin',
-  symbol: 'BTC',
-  name: 'Bitcoin',
-  priceUsd: 20000,
-},
-{
-  id: 'ethereum',
-  symbol: 'ETH',
-  name: 'Ethereum',
-  priceUsd: 0,
-},
-];
-
-const ratesMockData = [{
-  id: 'argentine-peso',
-  symbol: 'ARS',
-  currencySymbol: '$',
-  type: 'fiat',
-  rateUsd: 0.00001,
-}, {
-  id: 'united-states-dollar',
-  symbol: 'USD',
-  currencySymbol: '$',
-  type: 'fiat',
-  rateUsd: 1,
-},
-];
+import { coinsMockData, ratesMockData } from '../../utils/test/mock-data';
 
 describe('Calculator Test', () => {
   test('Deberia renderizar el componente Calculator', async () => {

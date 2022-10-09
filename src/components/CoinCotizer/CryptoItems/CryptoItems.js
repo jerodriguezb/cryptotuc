@@ -11,8 +11,8 @@ const CryptoItems = ({
 
   return (
     <ol className='list-group list-group-numbered'>
-      {coins?.slice(0, 5).map(crypto => (
-        <li key={crypto.id} className={classNames('list-group-item  d-flex justify-content-between align-items-start m-2 rounded', {
+      {coins.slice(0, 5).map(crypto => (
+        <li key={crypto.id} className={classNames('list-group-item d-flex justify-content-between align-items-start m-2 rounded', {
           'bg-gray-400': theme === 'light',
           'bg-gray-800 text-light': theme === 'dark',
         })}>

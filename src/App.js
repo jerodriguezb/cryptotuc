@@ -25,20 +25,23 @@ const App = () => {
       setAllRates(rates?.data?.data);
     }
   }, [coins, rates]);
+
   return (
     <div className={classNames('app-container py-0', {
       'bg-gray-400': theme === 'light',
       'bg-gray-200': theme === 'dark',
     })}>
       <Header rates={allRates} />
-      <Routes>
-        <Route index path='/' element={<Home />} />
-        <Route path='/cotizer' element={<CoinCotizer coins={allCoins} />} />
-        <Route path='/calculator' element={<Calculator rates={allRates} coins={allCoins} />} />
-        <Route path='/calculator/:coinId' element={<Calculator rates={allRates} coins={allCoins} />} />
-        <Route path='/chart' element={<Chart coins={allCoins} />} />
-        <Route path='/*' element={<NotFound />} />
-      </Routes>
+      <main>
+        <Routes>
+          <Route index path='/' element={<Home />} />
+          <Route path='/cotizer' element={<CoinCotizer coins={allCoins} />} />
+          <Route path='/calculator' element={<Calculator rates={allRates} coins={allCoins} />} />
+          <Route path='/calculator/:coinId' element={<Calculator rates={allRates} coins={allCoins} />} />
+          <Route path='/chart' element={<Chart coins={allCoins} />} />
+          <Route path='/*' element={<NotFound />} />
+        </Routes>
+      </main>
       <Footer />
     </div>
   );
