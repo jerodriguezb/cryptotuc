@@ -4,16 +4,47 @@ import { BrowserRouter } from 'react-router-dom';
 import { renderWithProviders } from '../../utils/test/test-utils';
 import Calculator from './Calculator';
 
+const coinsMockData = [{
+  id: 'bitcoin',
+  symbol: 'BTC',
+  name: 'Bitcoin',
+  priceUsd: 20000,
+},
+{
+  id: 'ethereum',
+  symbol: 'ETH',
+  name: 'Ethereum',
+  priceUsd: 0,
+},
+];
+
+const ratesMockData = [{
+  id: 'argentine-peso',
+  symbol: 'ARS',
+  currencySymbol: '$',
+  type: 'fiat',
+  rateUsd: 0.00001,
+}, {
+  id: 'united-states-dollar',
+  symbol: 'USD',
+  currencySymbol: '$',
+  type: 'fiat',
+  rateUsd: 1,
+},
+];
+
 describe('Calculator Test', () => {
   test('Deberia renderizar el componente Calculator', async () => {
-    renderWithProviders(<BrowserRouter><Calculator /></BrowserRouter>);
+    renderWithProviders(<BrowserRouter><Calculator
+      coins={coinsMockData} rates={ratesMockData} /></BrowserRouter>);
     const element = screen.getByText('Calculadora');
 
     expect(element).toBeInTheDocument();
   });
 
   test('Deberia simular una conversion involucrando a todos los elementos de la calculadora', async () => {
-    renderWithProviders(<BrowserRouter><Calculator /></BrowserRouter>);
+    renderWithProviders(<BrowserRouter><Calculator
+      coins={coinsMockData} rates={ratesMockData} /></BrowserRouter>);
     const coinSelector = screen.getByTestId('coin-selector');
     const cryptoSelector = screen.getByTestId('crypto-selector');
     const coinInput = screen.getByTestId('coin-value');

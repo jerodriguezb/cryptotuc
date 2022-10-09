@@ -1,22 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import ReactFlagsSelect from 'react-flags-select';
 import classNames from 'classnames';
-import useFetch from '../../../hooks/useFetch/useFetch';
 
 import { setThemeDefault, setThemeLight } from '../../../redux/ThemeProviderRedux';
 import { setCoin } from '../../../redux/CoinProviderRedux';
 
-const Header = () => {
+const Header = ({ rates }) => {
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.theme);
 
   const [country, setCountry] = useState('');
-  const [allCoins, setAllCoins] = useState([]);
-  const rates = useFetch('https://api.coincap.io/v2/rates');
-  const ipData = useFetch('https://ipapi.co/json/');
   const countryData = [{
     code: 'AR',
     coin: 'argentine-peso',
@@ -54,15 +50,8 @@ const Header = () => {
   const selectCountry = (countryCode) => {
     setCountry(countryCode);
     const selectedCountry = countryData.find(sCountry => sCountry.code === countryCode);
-    dispatch(setCoin(allCoins.find(sCountry => sCountry.id === selectedCountry.coin)));
+    dispatch(setCoin(rates.find(sCountry => sCountry.id === selectedCountry.coin)));
   };
-
-  useEffect(() => {
-    if (!ipData?.loading && !rates?.loading) {
-      setAllCoins(rates?.data?.data);
-      selectCountry(ipData?.data?.country_code);
-    }
-  }, [ipData, rates]);
 
   return (
     <nav data-testid='navbar-test' className={classNames('navbar navbar-expand-lg', {

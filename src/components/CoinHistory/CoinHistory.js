@@ -12,16 +12,13 @@ import {
   Legend,
 } from 'chart.js';
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useFetch from '../../hooks/useFetch/useFetch';
 
-const CoinHistory = () => {
+const CoinHistory = ({ coins }) => {
   const { theme } = useSelector((state) => state.theme);
   const { coin } = useSelector((state) => state.coin);
-
-  const [allCryptos, setAllCryptos] = useState([]);
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
-  const coins = useFetch('https://api.coincap.io/v2/assets');
   const historyData = useFetch(`https://api.coincap.io/v2/assets/${selectedCrypto}/history?interval=h1`);
 
   ChartJS.register(
@@ -72,16 +69,6 @@ const CoinHistory = () => {
     ],
   };
 
-  const handleChange = (ev) => {
-    setSelectedCrypto(ev.target.value);
-  };
-
-  useEffect(() => {
-    if (!coins.loading) {
-      setAllCryptos(coins?.data?.data);
-    }
-  }, [coins]);
-
   return (
     <div data-testid='graphic' className={classNames('col-12 col-md-8 p-4 px-md-0 my-4 mx-auto', {
       'bg-light text-dark': theme === 'light',
@@ -90,8 +77,8 @@ const CoinHistory = () => {
       <h3 className='text-center'><i className='bi bi-graph-down-arrow'></i></h3>
       <h4 className='text-center'>Grafico de Precios</h4>
       <div className='d-flex col-8 mx-auto'>
-        <select data-testid='crypto-selector'className='form-select' onChange={(ev) => handleChange(ev)} aria-label='Cryptocurrency selector'>
-          {allCryptos && allCryptos?.map(currency => <option key={currency.id}
+        <select data-testid='crypto-selector'className='form-select' onChange={(ev) => setSelectedCrypto(ev.target.value)} aria-label='Cryptocurrency selector'>
+          {coins?.map(currency => <option key={currency.id}
                 value={currency.id}>{currency.symbol}</option>)}
         </select>
       </div>

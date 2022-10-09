@@ -1,8 +1,8 @@
 import { CoinHistory } from '../../components/CoinHistory';
 
-const Chart = () => {
+const Chart = ({ coins }) => {
   return (
-    <CoinHistory />
+    <CoinHistory coins={coins}/>
   );
 };
 

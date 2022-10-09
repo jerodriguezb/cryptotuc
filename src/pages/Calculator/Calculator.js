@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
-import useFetch from '../../hooks/useFetch/useFetch';
 
-const Calculator = () => {
+const Calculator = ({ coins, rates }) => {
   const { cryptoId } = useParams();
   const { coin } = useSelector((state) => state.coin);
   const { theme } = useSelector((state) => state.theme);
@@ -17,9 +16,6 @@ const Calculator = () => {
   const coinSelectorRef = useRef(null);
   const cryptoSelectorRef = useRef(null);
 
-  const Coins = useFetch('https://api.coincap.io/v2/assets');
-  const Rates = useFetch('https://api.coincap.io/v2/rates');
-
   const calcCryptoValue = () => {
     setCryptoInputValue(((coinInputValue * selectedCoinRate) / selectedCryptoValue).toFixed(3));
   };
@@ -31,11 +27,11 @@ const Calculator = () => {
   useEffect(() => {
     setSelectedCoinRate(coinSelectorRef.current.value * 1);
     setSelectedCryptoValue(cryptoSelectorRef.current.value * 1);
-  }, [Coins, Rates]);
+  }, [coins, rates]);
 
   useEffect(() => {
     const coinIndex = Array.from(coinSelectorRef.current).findIndex(
-      option => option.innerHTML === coin.symbol,
+      option => option.innerHTML === coin?.symbol,
     );
     coinSelectorRef.current.selectedIndex = coinIndex;
   }, [coin]);
@@ -52,28 +48,25 @@ const Calculator = () => {
       'bg-gray-300': theme === 'light',
       'bg-dark': theme === 'dark',
     })}>
-      <h2 className={classNames('text-center', {
-        'text-dark': theme === 'light',
-        'text-white': theme === 'dark',
-      })}>Calculadora</h2>
       <h4 className='text-center'>
         <i className={classNames('bi bi-calculator', {
           'text-dark': theme === 'light',
           'text-white': theme === 'dark',
         })}></i>
       </h4>
+      <h2 className={classNames('text-center', {
+        'text-dark': theme === 'light',
+        'text-white': theme === 'dark',
+      })}>Calculadora</h2>
       <form className='row g-3 p-3'>
         <div className='col-md-6'>
           <label className={classNames('form-label pb-2', {
             'text-dark': theme === 'light',
             'text-white': theme === 'dark',
           })}>1. Selecciona la moneda que quieras convertir:</label>
-          {Rates?.loading && <div className='spinner-grow text-info spinner-grow-sm ms-2' role='status'>
-            <span className='visually-hidden'>Loading...</span>
-          </div>}
           <select ref={coinSelectorRef} data-testid='coin-selector'className='form-select'
             onChange={(ev) => setSelectedCoinRate(ev.target.value)}>
-            {!Rates?.loading && Rates?.data?.data?.map(rate => <option key={rate.id}
+            {rates?.map(rate => <option key={rate.id}
               value={rate.rateUsd}>{rate.symbol}</option>)}
           </select>
         </div>
@@ -90,12 +83,9 @@ const Calculator = () => {
             'text-dark': theme === 'light',
             'text-white': theme === 'dark',
           })}>3. Selecciona la criptomoneda:</label>
-          {Coins?.loading && <div className='spinner-grow text-info spinner-grow-sm ms-2' role='status'>
-            <span className='visually-hidden'>Loading...</span>
-          </div>}
           <select ref={cryptoSelectorRef} data-testid='crypto-selector' name='select-coins' id='select-coins' className='form-select'
             onChange={(ev) => setSelectedCryptoValue(ev.target.value)}>
-            {!Coins?.loading && Coins?.data?.data?.map(currency => <option key={currency.id}
+            {coins?.map(currency => <option key={currency.id}
               value={currency.priceUsd}>{currency.symbol}</option>)}
           </select>
         </div>
