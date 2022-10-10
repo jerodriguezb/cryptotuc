@@ -66,7 +66,7 @@ const CoinHistory = ({ selectedCrypto }) => {
   };
 
   return (
-    <Line className='p-2' options={options} data={data} />
+    <Line className='px-2 pt-2' options={options} data={data} />
   );
 };
 

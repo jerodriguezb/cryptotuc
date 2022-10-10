@@ -13,11 +13,12 @@ const Calculator = ({ coins, rates }) => {
   const [coinInputValue, setCoinInputValue] = useState(0);
   const [cryptoInputValue, setCryptoInputValue] = useState(0);
 
-  const coinSelectorRef = useRef(null);
-  const cryptoSelectorRef = useRef(null);
+  const coinSelectorRef = useRef();
+  const cryptoSelectorRef = useRef();
 
   const calcCryptoValue = () => {
-    setCryptoInputValue(((coinInputValue * selectedCoinRate) / selectedCryptoValue).toFixed(3));
+    setCryptoInputValue(((coinInputValue * selectedCoinRate)
+      / selectedCryptoValue).toFixed(3));
   };
 
   const onSubmitCalc = (ev) => {
@@ -26,7 +27,7 @@ const Calculator = ({ coins, rates }) => {
   };
 
   useEffect(() => {
-    calcCryptoValue();
+    setCryptoInputValue(0);
   }, [selectedCoinRate, selectedCryptoValue]);
 
   useEffect(() => {
@@ -34,16 +35,16 @@ const Calculator = ({ coins, rates }) => {
       option => option.innerHTML === coin?.symbol,
     );
     coinSelectorRef.current.selectedIndex = coinIndex;
-    setSelectedCoinRate(coin.rateUsd);
+    setSelectedCoinRate(coin?.rateUsd);
     calcCryptoValue();
   }, [coin]);
 
-  // useEffect(() => {
-  //   const coinIndex = Array.from(cryptoSelectorRef.current).findIndex(
-  //     option => option.innerHTML === cryptoId,
-  //   );
-  //   coinSelectorRef.current.selectedIndex = coinIndex;
-  // }, [cryptoId]);
+  useEffect(() => {
+    const cryptoIndex = Array.from(cryptoSelectorRef.current).findIndex(
+      option => option.dataset.cryptoid === cryptoId,
+    );
+    cryptoSelectorRef.current.selectedIndex = cryptoIndex;
+  }, [cryptoId]);
 
   return (
     <div className={classNames('container col-10 col-md-12 col-xxl-6 rounded-4 my-5 text-light py-4 px-4 px-md-0', {
@@ -89,7 +90,7 @@ const Calculator = ({ coins, rates }) => {
           <select ref={cryptoSelectorRef} data-testid='crypto-selector' name='select-coins' id='select-coins' className='form-select'
             onChange={(ev) => setSelectedCryptoValue(ev.target.value)}>
             <option>Seleccione la criptomoneda.</option>
-            {coins?.map(currency => <option key={currency.id}
+            {coins?.map(currency => <option key={currency.id} data-cryptoid={currency.id}
               value={currency.priceUsd}>{currency.symbol}</option>)}
           </select>
         </div>
@@ -98,7 +99,7 @@ const Calculator = ({ coins, rates }) => {
             'text-dark': theme === 'light',
             'text-white': theme === 'dark',
           })}>4. Valor calculado:</label>
-          <input data-testid='crypto-value' value={cryptoInputValue} min={0} className='form-control form-control-md' type='number' readOnly='readonly' />
+          <input data-testid='crypto-value' value={cryptoInputValue} min={0} className='form-control form-control-md' type='number' readOnly='readonly' pattern='^[0-9]*(?:\.[0-9]*)?$' />
         </div>
         <div className='d-flex flex-row justify-content-end'>
           <button type='submit' className='btn btn-light me-0' form='calculator-submit'>Calcular</button>

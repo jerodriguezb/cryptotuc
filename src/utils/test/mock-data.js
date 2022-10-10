@@ -1,3 +1,11 @@
+export const ipCountryMockData = [{
+  data: {
+    country_code: 'AR',
+  },
+  loading: false,
+  error: null,
+}];
+
 export const coinsMockData = [{
   id: 'bitcoin',
   symbol: 'BTC',

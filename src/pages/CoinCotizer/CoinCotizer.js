@@ -1,11 +1,15 @@
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { CryptoItems, SearchBox } from '../../components/CoinCotizer';
 
 const CoinCotizer = ({ coins }) => {
   const { theme } = useSelector((state) => state.theme);
   const [filteredCoins, setFilteredCoins] = useState(coins);
+
+  useEffect(() => {
+    setFilteredCoins(coins);
+  }, [coins]);
 
   return (
     <div className={classNames('container col-12 col-lg-6 rounded-4 my-4 pe-4 p-lg-4', {
@@ -26,7 +30,7 @@ const CoinCotizer = ({ coins }) => {
       </div>
       <div className='row'>
         <div className='d-flex flex-row justify-content-between'>
-          <div className='col-md-6 col-12 m-2 p-2'>
+          <div className='col-12 m-2 p-2'>
             <SearchBox allCoins={coins} setFilteredCoins={setFilteredCoins} />
           </div>
         </div>

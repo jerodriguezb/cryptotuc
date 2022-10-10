@@ -18,6 +18,7 @@ const App = () => {
 
   const coins = useFetch('https://api.coincap.io/v2/assets');
   const rates = useFetch('https://api.coincap.io/v2/rates');
+  const ipData = useFetch('https://ipapi.co/json/');
 
   useEffect(() => {
     if (!coins.loading || !rates.loading) {
@@ -31,14 +32,15 @@ const App = () => {
       'bg-gray-400': theme === 'light',
       'bg-gray-200': theme === 'dark',
     })}>
-      <Header rates={allRates} />
+      <Header rates={allRates} ipData={ipData} />
       <main>
         <Routes>
           <Route index path='/' element={<Home />} />
           <Route path='/cotizer' element={<CoinCotizer coins={allCoins} />} />
           <Route path='/calculator' element={<Calculator rates={allRates} coins={allCoins} />} />
-          <Route path='/calculator/:coinId' element={<Calculator rates={allRates} coins={allCoins} />} />
+          <Route path='/calculator/:cryptoId' element={<Calculator rates={allRates} coins={allCoins} />} />
           <Route path='/chart' element={<Chart coins={allCoins} />} />
+          <Route path='/chart/:cryptoId' element={<Chart coins={allCoins} />} />
           <Route path='/*' element={<NotFound />} />
         </Routes>
       </main>

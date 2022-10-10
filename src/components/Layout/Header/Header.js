@@ -1,57 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-
 import ReactFlagsSelect from 'react-flags-select';
 import classNames from 'classnames';
-
 import { setThemeDefault, setThemeLight } from '../../../redux/ThemeProviderRedux';
 import { setCoin } from '../../../redux/CoinProviderRedux';
+import { countryData } from '../../../utils/country-data';
 
-const Header = ({ rates }) => {
+const Header = ({ rates, ipData }) => {
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.theme);
 
-  const [country, setCountry] = useState('');
-  const countryData = [{
-    code: 'AR',
-    coin: 'argentine-peso',
-  },
-  {
-    code: 'BR',
-    coin: 'brazilian-real',
-  },
-  {
-    code: 'BO',
-    coin: 'bolivian-boliviano',
-  },
-  {
-    code: 'CL',
-    coin: 'chilean-peso',
-  },
-  {
-    code: 'CO',
-    coin: 'colombian-peso',
-  },
-  {
-    code: 'PE',
-    coin: 'peruvian-nuevo-sol',
-  },
-  {
-    code: 'US',
-    coin: 'united-states-dollar',
-  },
-  {
-    code: 'UY',
-    coin: 'uruguayan-peso',
-  },
-  ];
+  const [selectedCountry, setSelectedCountry] = useState('');
 
-  const selectCountry = (countryCode) => {
-    setCountry(countryCode);
-    const selectedCountry = countryData.find(sCountry => sCountry.code === countryCode);
-    dispatch(setCoin(rates.find(sCountry => sCountry.id === selectedCountry.coin)));
+  const selectCountry = () => {
+    const country = countryData.find(sCountry => sCountry.code === selectedCountry);
+    const countryCoin = rates?.find(sCountry => sCountry.id === country?.coin);
+    if (countryCoin) {
+      dispatch(setCoin(countryCoin));
+    }
   };
+
+  useEffect(() => {
+    selectCountry();
+  }, [selectedCountry]);
+
+  useEffect(() => {
+    setSelectedCountry(ipData?.data?.country_code);
+  }, [ipData]);
 
   return (
     <nav data-testid='navbar-test' className={classNames('navbar navbar-expand-lg', {
@@ -72,8 +48,8 @@ const Header = ({ rates }) => {
           </ul>
           <ul className='navbar-nav'>
             <li className='nav-item me-2'><ReactFlagsSelect
-                  selected={country}
-                  onSelect={(code) => selectCountry(code)}
+                  selected={selectedCountry}
+                  onSelect={(countryCode) => setSelectedCountry(countryCode)}
                   placeholder='Seleccione su pais'
                   countries={['AR', 'BR', 'BO', 'CL', 'CO', 'PE', 'US', 'UY']}
                   customLabels={{

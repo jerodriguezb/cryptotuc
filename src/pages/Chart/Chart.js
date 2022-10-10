@@ -1,24 +1,36 @@
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import { NavLink, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { useState } from 'react';
 import { CoinHistory } from '../../components/CoinHistory';
 
 const Chart = ({ coins }) => {
+  const { cryptoId } = useParams();
   const { theme } = useSelector((state) => state.theme);
 
-  const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
+  const [selectedCrypto, setSelectedCrypto] = useState('');
+  const cryptoSelectorRef = useRef();
+
+  useEffect(() => {
+    const cryptoIndex = Array.from(cryptoSelectorRef.current).findIndex(
+      option => option.dataset.cryptoid === cryptoId,
+    );
+    cryptoSelectorRef.current.selectedIndex = cryptoIndex;
+    setSelectedCrypto(cryptoId);
+  }, [cryptoId]);
+
   return (
-    <div data-testid='graphic' className={classNames('col-12 col-md-8 p-4 px-md-0 my-4 mx-auto', {
+    <div data-testid='graphic' className={classNames('col-12 col-md-8 p-4 px-md-0 my-4 mx-auto rounded-4', {
       'bg-light text-dark': theme === 'light',
       'bg-dark text-light': theme === 'dark',
     })}>
-      <h3 className='text-center'><i className='bi bi-graph-down-arrow'></i></h3>
+      <h3 className='text-center'><i className='bi bi-graph-up-arrow'></i></h3>
       <h4 className='text-center'>Grafico de Precios</h4>
       <div className='d-flex col-8 mx-auto'>
-        <select data-testid='crypto-selector'className='form-select' onChange={(ev) => setSelectedCrypto(ev.target.value)} aria-label='Cryptocurrency selector'>
+        <select ref={cryptoSelectorRef} data-testid='crypto-selector' className='form-select' onChange={(ev) => setSelectedCrypto(ev.target.value)} aria-label='Cryptocurrency selector'>
+          <option>Seleccione la criptomoneda.</option>
           {coins?.map(currency => <option key={currency.id}
-                value={currency.id}>{currency.symbol}</option>)}
+                value={currency.id} data-cryptoid={currency.id}>{currency.symbol}</option>)}
         </select>
       </div>
       <CoinHistory selectedCrypto={selectedCrypto} />
