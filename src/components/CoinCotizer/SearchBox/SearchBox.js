@@ -1,40 +1,36 @@
 import React from 'react';
 
 const SearchBox = ({ allCoins, setFilteredCoins }) => {
-  const filtrar = (terminoBusqueda) => {
-    if (!terminoBusqueda) {
+  const filtrar = (searchTerm) => {
+    if (searchTerm === '') {
       setFilteredCoins(allCoins);
     }
-    const resultadosBusqueda = allCoins.filter(elemento => {
-      if (
-        elemento.name
+
+    const searchResults = allCoins?.filter(element => {
+      return (
+        element.name
           .toString()
           .toLowerCase()
-          .includes(terminoBusqueda.toLowerCase())
-        || elemento.symbol
+          .includes(searchTerm.toLowerCase())
+        || element.symbol
           .toString()
           .toLowerCase()
-          .includes(terminoBusqueda.toLowerCase())
-      ) {
-        return elemento;
-      }
-      return null;
+          .includes(searchTerm.toLowerCase())
+      )
+        && element;
     });
-    setFilteredCoins(resultadosBusqueda);
+
+    setFilteredCoins(searchResults);
   };
 
-  const handleChange = e => {
-    filtrar(e.target.value);
-  };
   return (
-    <>
-      <input
-        type='text'
-        className='form-control form-input'
-        placeholder='Buscar bitcoin o btc'
-        onChange={handleChange}
-      ></input>
-    </>
+    <input
+      data-testid='crypto-search-box'
+      type='text'
+      className='form-control form-input'
+      placeholder='Ingrese bitcoin o btc'
+      onChange={(ev) => filtrar(ev.target.value)}
+    ></input>
   );
 };
 

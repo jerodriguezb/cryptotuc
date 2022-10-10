@@ -1,5 +1,3 @@
-import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -11,17 +9,12 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+
+import { useSelector } from 'react-redux';
 import useFetch from '../../hooks/useFetch/useFetch';
 
-const CoinHistory = () => {
-  const { theme } = useSelector((state) => state.theme);
+const CoinHistory = ({ selectedCrypto }) => {
   const { coin } = useSelector((state) => state.coin);
-
-  const [allCryptos, setAllCryptos] = useState([]);
-  const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
-  const coins = useFetch('https://api.coincap.io/v2/assets');
   const historyData = useFetch(`https://api.coincap.io/v2/assets/${selectedCrypto}/history?interval=h1`);
 
   ChartJS.register(
@@ -72,39 +65,8 @@ const CoinHistory = () => {
     ],
   };
 
-  const handleChange = (ev) => {
-    setSelectedCrypto(ev.target.value);
-  };
-
-  useEffect(() => {
-    if (!coins.loading) {
-      setAllCryptos(coins?.data?.data);
-    }
-  }, [coins]);
-
   return (
-    <div data-testid='graphic' className={classNames('col-12 col-md-8 p-4 px-md-0 my-4 mx-auto', {
-      'bg-light text-dark': theme === 'light',
-      'bg-dark text-light': theme === 'dark',
-    })}>
-      <h3 className='text-center'><i className='bi bi-graph-down-arrow'></i></h3>
-      <h4 className='text-center'>Grafico de Precios</h4>
-      <div className='d-flex col-8 mx-auto'>
-        <select data-testid='crypto-selector'className='form-select' onChange={(ev) => handleChange(ev)} aria-label='Cryptocurrency selector'>
-          {allCryptos && allCryptos?.map(currency => <option key={currency.id}
-                value={currency.id}>{currency.symbol}</option>)}
-        </select>
-      </div>
-      <Line className='p-2' options={options} data={data} />
-      <NavLink className='chart nav-link text-center' to='/'>
-        <button className={classNames('btn', {
-          'btn-light border border-1 border-dark': theme === 'light',
-          'btn-dark': theme === 'dark',
-        })}>
-          <i className='bi bi-arrow-left'></i>
-        </button>
-      </NavLink>
-    </div>
+    <Line className='px-2 pt-2' options={options} data={data} />
   );
 };
 

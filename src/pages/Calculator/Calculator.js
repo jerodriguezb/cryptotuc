@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
-import useFetch from '../../hooks/useFetch/useFetch';
 
-const Calculator = () => {
+const Calculator = ({ coins, rates }) => {
   const { cryptoId } = useParams();
   const { coin } = useSelector((state) => state.coin);
   const { theme } = useSelector((state) => state.theme);
@@ -14,37 +13,37 @@ const Calculator = () => {
   const [coinInputValue, setCoinInputValue] = useState(0);
   const [cryptoInputValue, setCryptoInputValue] = useState(0);
 
-  const coinSelectorRef = useRef(null);
-  const cryptoSelectorRef = useRef(null);
-
-  const Coins = useFetch('https://api.coincap.io/v2/assets');
-  const Rates = useFetch('https://api.coincap.io/v2/rates');
+  const coinSelectorRef = useRef();
+  const cryptoSelectorRef = useRef();
 
   const calcCryptoValue = () => {
-    setCryptoInputValue(((coinInputValue * selectedCoinRate) / selectedCryptoValue).toFixed(3));
+    setCryptoInputValue(((coinInputValue * selectedCoinRate)
+      / selectedCryptoValue).toFixed(3));
+  };
+
+  const onSubmitCalc = (ev) => {
+    ev.preventDefault();
+    calcCryptoValue();
   };
 
   useEffect(() => {
-    calcCryptoValue();
-  }, [coinInputValue, selectedCoinRate, selectedCryptoValue]);
-
-  useEffect(() => {
-    setSelectedCoinRate(coinSelectorRef.current.value * 1);
-    setSelectedCryptoValue(cryptoSelectorRef.current.value * 1);
-  }, [Coins, Rates]);
+    setCryptoInputValue(0);
+  }, [selectedCoinRate, selectedCryptoValue]);
 
   useEffect(() => {
     const coinIndex = Array.from(coinSelectorRef.current).findIndex(
-      option => option.innerHTML === coin.symbol,
+      option => option.innerHTML === coin?.symbol,
     );
     coinSelectorRef.current.selectedIndex = coinIndex;
+    setSelectedCoinRate(coin?.rateUsd);
+    calcCryptoValue();
   }, [coin]);
 
   useEffect(() => {
-    const coinIndex = Array.from(cryptoSelectorRef.current).findIndex(
-      option => option.innerHTML === cryptoId,
+    const cryptoIndex = Array.from(cryptoSelectorRef.current).findIndex(
+      option => option.dataset.cryptoid === cryptoId,
     );
-    coinSelectorRef.current.selectedIndex = coinIndex;
+    cryptoSelectorRef.current.selectedIndex = cryptoIndex;
   }, [cryptoId]);
 
   return (
@@ -52,28 +51,26 @@ const Calculator = () => {
       'bg-gray-300': theme === 'light',
       'bg-dark': theme === 'dark',
     })}>
-      <h2 className={classNames('text-center', {
-        'text-dark': theme === 'light',
-        'text-white': theme === 'dark',
-      })}>Calculadora</h2>
       <h4 className='text-center'>
         <i className={classNames('bi bi-calculator', {
           'text-dark': theme === 'light',
           'text-white': theme === 'dark',
         })}></i>
       </h4>
-      <form className='row g-3 p-3'>
+      <h2 className={classNames('text-center', {
+        'text-dark': theme === 'light',
+        'text-white': theme === 'dark',
+      })}>Calculadora</h2>
+      <form className='row g-3 p-3' id='calculator-submit' onSubmit={(ev) => onSubmitCalc(ev)}>
         <div className='col-md-6'>
           <label className={classNames('form-label pb-2', {
             'text-dark': theme === 'light',
             'text-white': theme === 'dark',
           })}>1. Selecciona la moneda que quieras convertir:</label>
-          {Rates?.loading && <div className='spinner-grow text-info spinner-grow-sm ms-2' role='status'>
-            <span className='visually-hidden'>Loading...</span>
-          </div>}
           <select ref={coinSelectorRef} data-testid='coin-selector'className='form-select'
             onChange={(ev) => setSelectedCoinRate(ev.target.value)}>
-            {!Rates?.loading && Rates?.data?.data?.map(rate => <option key={rate.id}
+            <option>Seleccione la moneda.</option>
+            {rates?.map(rate => <option key={rate.id}
               value={rate.rateUsd}>{rate.symbol}</option>)}
           </select>
         </div>
@@ -83,19 +80,17 @@ const Calculator = () => {
             'text-white': theme === 'dark',
           })}>2. Ingresa la cantidad: </label>
           <input data-testid='coin-value' onChange={(ev) => setCoinInputValue(ev.target.value)}
-            type='number' defaultValue={0} className='form-control form-control-md' />
+            type='text' defaultValue={0} min={0} className='form-control form-control-md' pattern='^[0-9]*(?:\.[0-9]*)?$' />
         </div>
         <div className='col-md-6 mt-4'>
           <label className={classNames('form-label pb-2', {
             'text-dark': theme === 'light',
             'text-white': theme === 'dark',
           })}>3. Selecciona la criptomoneda:</label>
-          {Coins?.loading && <div className='spinner-grow text-info spinner-grow-sm ms-2' role='status'>
-            <span className='visually-hidden'>Loading...</span>
-          </div>}
           <select ref={cryptoSelectorRef} data-testid='crypto-selector' name='select-coins' id='select-coins' className='form-select'
             onChange={(ev) => setSelectedCryptoValue(ev.target.value)}>
-            {!Coins?.loading && Coins?.data?.data?.map(currency => <option key={currency.id}
+            <option>Seleccione la criptomoneda.</option>
+            {coins?.map(currency => <option key={currency.id} data-cryptoid={currency.id}
               value={currency.priceUsd}>{currency.symbol}</option>)}
           </select>
         </div>
@@ -104,7 +99,10 @@ const Calculator = () => {
             'text-dark': theme === 'light',
             'text-white': theme === 'dark',
           })}>4. Valor calculado:</label>
-          <input data-testid='crypto-value' value={cryptoInputValue} min={0} className='form-control form-control-md' type='number' readOnly='readonly' />
+          <input data-testid='crypto-value' value={cryptoInputValue} min={0} className='form-control form-control-md' type='number' readOnly='readonly' pattern='^[0-9]*(?:\.[0-9]*)?$' />
+        </div>
+        <div className='d-flex flex-row justify-content-end'>
+          <button type='submit' className='btn btn-light me-0' form='calculator-submit'>Calcular</button>
         </div>
       </form>
       <NavLink className='nav-link text-center mt-4' to='/'>
