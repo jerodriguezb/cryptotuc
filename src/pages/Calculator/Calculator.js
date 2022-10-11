@@ -9,7 +9,7 @@ const Calculator = ({ coins, rates }) => {
   const { theme } = useSelector((state) => state.theme);
 
   const [selectedCoinRate, setSelectedCoinRate] = useState(0);
-  const [selectedCryptoValue, setSelectedCryptoValue] = useState(1);
+  const [selectedCryptoValue, setSelectedCryptoValue] = useState(0);
   const [coinInputValue, setCoinInputValue] = useState(0);
   const [cryptoInputValue, setCryptoInputValue] = useState(0);
 
@@ -69,7 +69,7 @@ const Calculator = ({ coins, rates }) => {
           })}>1. Selecciona la moneda que quieras convertir:</label>
           <select ref={coinSelectorRef} data-testid='coin-selector'className='form-select'
             onChange={(ev) => setSelectedCoinRate(ev.target.value)}>
-            <option>Seleccione la moneda.</option>
+            <option value={0}>Seleccione la moneda.</option>
             {rates?.map(rate => <option key={rate.id}
               value={rate.rateUsd}>{rate.symbol}</option>)}
           </select>
@@ -89,7 +89,7 @@ const Calculator = ({ coins, rates }) => {
           })}>3. Selecciona la criptomoneda:</label>
           <select ref={cryptoSelectorRef} data-testid='crypto-selector' name='select-coins' id='select-coins' className='form-select'
             onChange={(ev) => setSelectedCryptoValue(ev.target.value)}>
-            <option>Seleccione la criptomoneda.</option>
+            <option value={0}>Seleccione la criptomoneda.</option>
             {coins?.map(currency => <option key={currency.id} data-cryptoid={currency.id}
               value={currency.priceUsd}>{currency.symbol}</option>)}
           </select>

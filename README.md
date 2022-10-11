@@ -19,7 +19,7 @@ Proyecto creado con las siguientes tecnologias:
 - CoinCap API
 - IP API
 
-Librerias utiles que nos fueron utiles:
+Librerias que nos fueron utiles:
 - Axios
 - Cryptocons
 - Chart.js
