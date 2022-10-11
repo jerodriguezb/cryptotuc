@@ -10,7 +10,7 @@ const Chart = ({ coins }) => {
 
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
   const cryptoSelectorRef = useRef();
-  
+
   /* istanbul ignore next */
   useEffect(() => {
     const cryptoIndex = Array.from(cryptoSelectorRef.current).findIndex(
