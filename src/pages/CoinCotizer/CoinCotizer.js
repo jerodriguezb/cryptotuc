@@ -34,7 +34,7 @@ const CoinCotizer = ({ coins }) => {
             <SearchBox allCoins={coins} setFilteredCoins={setFilteredCoins} />
           </div>
         </div>
-        <div className='col-12 m-2 p-2 text-center'>
+        <div className='col-12 m-2 pe-4 py-2 text-center'>
           <CryptoItems coins={filteredCoins} />
         </div>
       </div>
